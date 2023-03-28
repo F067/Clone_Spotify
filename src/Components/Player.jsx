@@ -33,7 +33,7 @@ export default function Player() {
                     }
                     <div style={{ marginLeft: " 20px", fontSize: "5px", color: "#20CA5F" }}><FavoriteIcon /></div>
                 </div>
-                <div>Play</div>
+                <div><PlayCircleIcon style={{fontSize:30}} /></div>
                 <div>Volume etc</div>
             </div>
         </div>
