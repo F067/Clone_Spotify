@@ -95,7 +95,7 @@ export default function Player() {
                     <FastForwardIcon style={{ fontSize: 30 }} />
                     {
                         isRepeat ?
-                            < RepeatOneIcon onClick={() => handleRepeat()} style={{ fontSize: 30,  color: "#20CA5F" }} />
+                            < RepeatOneIcon onClick={() => handleRepeat()} style={{ fontSize: 30, color: "#20CA5F" }} />
                             :
                             <RepeatIcon onClick={() => handleRepeat()} style={{ fontSize: 30 }} />
                     }
