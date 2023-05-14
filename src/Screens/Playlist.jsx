@@ -7,5 +7,4 @@ function Playlist() {
     </div>
   )
 }
-
 export default Playlist

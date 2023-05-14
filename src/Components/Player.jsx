@@ -8,7 +8,6 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import RepeatOneIcon from '@mui/icons-material/RepeatOne';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Slider from '@mui/material/Slider';
@@ -16,32 +15,42 @@ import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
 export default function Player() {
-
     const [volume, setVolume] = useState(30);
+    const [isPlaying, setisPlaying] = useState(false)
+    const [isLiked, setIsLiked] = useState(false)
+
 
     const handleChange = (event, newValue) => {
         setVolume(newValue);
     };
 
-    const handleVolumeDown = ()=>{
-        if(volume > 0){
+    const handleVolumeDown = () => {
+        if (volume > 0) {
             setVolume(volume - 5)
             console.log(volume)
 
         }
-        else{
+        else {
             setVolume(0)
         }
     }
 
-    const handleVolumeUp = ()=>{
-        if(volume < 100){
+    const handleVolumeUp = () => {
+        if (volume < 100) {
             setVolume(volume + 5)
             console.log(volume)
         }
-        else{
+        else {
             setVolume(100)
         }
+    }
+
+    const handlePlayOrPause = () => {
+        setisPlaying(!isPlaying)
+    }
+
+    const handleLike = ()=> {
+        setIsLiked(!isLiked)
     }
 
     const playerInfo = [
@@ -61,32 +70,32 @@ export default function Player() {
                                 </div>
                             )
                         })
-
                     }
-                    <div style={{ marginLeft: " 20px", fontSize: "5px", color: "#20CA5F" }}><FavoriteIcon /></div>
+                    <div style={{ marginLeft: " 20px", fontSize: "5px", color: isLiked ? "#20CA5F" : "#FFFF" }}><FavoriteIcon onClick={() => handleLike()} /></div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems:'center' }}>
-
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
                     <ShuffleIcon style={{ fontSize: 30 }} />
                     <FastRewindIcon style={{ fontSize: 30 }} />
-                    <PlayCircleIcon style={{ fontSize: 50 }} />
+                    {
+                        isPlaying ?
+                            <PauseCircleIcon onClick={() => handlePlayOrPause()} style={{ fontSize: 50 }} />
+                            :
+                            <PlayCircleIcon onClick={() => handlePlayOrPause()} style={{ fontSize: 50 }} />
+                    }
                     <FastForwardIcon style={{ fontSize: 30 }} />
                     <RepeatIcon style={{ fontSize: 30 }} />
-
-
                 </div>
                 <div>
                     <Box sx={{ width: 200 }}>
                         <Stack spacing={2} direction="row" alignItems="center">
-                            <VolumeDown onClick={()=> handleVolumeDown()} />
+                            <VolumeDown onClick={() => handleVolumeDown()} />
                             <Slider sx={{ color: '#FFF' }} aria-label="Volume" value={volume} onChange={handleChange} />
-                            <VolumeUp onClick={()=> handleVolumeUp()}/>
+                            <VolumeUp onClick={() => handleVolumeUp()} />
                         </Stack>
                     </Box>
                 </div>
             </div>
         </div>
-
     )
 }
 

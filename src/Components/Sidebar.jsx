@@ -8,11 +8,8 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import ChairIcon from '@mui/icons-material/Chair';
 import { Button } from '@mui/material';
 
-
 const drawerWidth = 300;
-
 export default function Sidebar() {
-
     const menu = [
         { title: "Accueil", icon: ChairIcon },
         { title: "Rechercher", icon: SearchIcon },
@@ -44,7 +41,6 @@ export default function Sidebar() {
                     })
                 }
             </div>
-
             <div style={{ display: "flex", flexDirection: "column", marginTop: 20, padding: 10 }}>
                 {
                     menu2.map((el, index) => {
@@ -58,7 +54,6 @@ export default function Sidebar() {
                     })
                 }
             </div>
-
             <div style={{ marginTop: "auto", fontSize: 10, color: "#c3c3c3", padding: 10 }}>
                 <div style={{ display: "flex", justifyContent: 'space-between', marginBottom: 5 }}>
                     <a href="#">Légal</a>
@@ -71,7 +66,6 @@ export default function Sidebar() {
                 <a style={{marginBottom: 5 }} href="#">Cookies</a>
                 </div>
             </div>
-            
             <div style={{marginTop: 30, padding: 10}}>
                 <Button style={{fontSize: 10}} variant='outlined'><LanguageIcon style={{marginRight: 5, fontSize: 20}}/>Français</Button>
             </div>
