@@ -18,6 +18,8 @@ export default function Player() {
     const [volume, setVolume] = useState(30);
     const [isPlaying, setisPlaying] = useState(false)
     const [isLiked, setIsLiked] = useState(false)
+    const [isRepeat, setIsRepeat] = useState(false)
+    const [isRandom, setIsRandom] = useState(false)
 
 
     const handleChange = (event, newValue) => {
@@ -49,8 +51,16 @@ export default function Player() {
         setisPlaying(!isPlaying)
     }
 
-    const handleLike = ()=> {
+    const handleLike = () => {
         setIsLiked(!isLiked)
+    }
+
+    const handleRepeat = () => {
+        setIsRepeat(!isRepeat)
+    }
+
+    const handleRandomSongs = () => {
+        setIsRandom(!isRandom)
     }
 
     const playerInfo = [
@@ -74,7 +84,7 @@ export default function Player() {
                     <div style={{ marginLeft: " 20px", fontSize: "5px", color: isLiked ? "#20CA5F" : "#FFFF" }}><FavoriteIcon onClick={() => handleLike()} /></div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-                    <ShuffleIcon style={{ fontSize: 30 }} />
+                    <ShuffleIcon onClick={() => handleRandomSongs()} style={{ fontSize: 30, color: isRandom ? "#20CA5F" : "#FFFF" }} />
                     <FastRewindIcon style={{ fontSize: 30 }} />
                     {
                         isPlaying ?
@@ -83,7 +93,12 @@ export default function Player() {
                             <PlayCircleIcon onClick={() => handlePlayOrPause()} style={{ fontSize: 50 }} />
                     }
                     <FastForwardIcon style={{ fontSize: 30 }} />
-                    <RepeatIcon style={{ fontSize: 30 }} />
+                    {
+                        isRepeat ?
+                            < RepeatOneIcon onClick={() => handleRepeat()} style={{ fontSize: 30,  color: "#20CA5F" }} />
+                            :
+                            <RepeatIcon onClick={() => handleRepeat()} style={{ fontSize: 30 }} />
+                    }
                 </div>
                 <div>
                     <Box sx={{ width: 200 }}>
