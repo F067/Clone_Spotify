@@ -11,6 +11,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/playlist" element={<Playlist />} />
+        <Route path="/Home" element={<Home />} />
       </Routes>
     </BrowserRouter>
   )

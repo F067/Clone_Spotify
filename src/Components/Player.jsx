@@ -29,8 +29,6 @@ export default function Player() {
     const handleVolumeDown = () => {
         if (volume > 0) {
             setVolume(volume - 5)
-            console.log(volume)
-
         }
         else {
             setVolume(0)
@@ -40,7 +38,6 @@ export default function Player() {
     const handleVolumeUp = () => {
         if (volume < 100) {
             setVolume(volume + 5)
-            console.log(volume)
         }
         else {
             setVolume(100)
