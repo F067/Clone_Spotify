@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { callPost } from './Utils';
 import { useDispatch } from 'react-redux';
-import { setAccessToken, setExpiresAt } from './Store/Token/slice';
+import { setAccessToken, setExpiresAt, setTokenType } from './Store/Token/slice';
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Screens/Home';
@@ -11,12 +11,14 @@ import './App.css'
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    callPost('spotify/token')
+    callPost('/spotify/token')
       .then(response => {
-        const accessToken = response.data.access_token;
-        const expiresIn = response.data.expires_in
+        const accessToken = response.access_token;
+        const expiresIn = response.expires_in
+        const tokenType = response.token_type
         dispatch(setAccessToken(accessToken));
         dispatch(setExpiresAt(Date.now() + expiresIn * 1000));
+        dispatch(setTokenType(tokenType))
 
       })
       .catch(error => {
