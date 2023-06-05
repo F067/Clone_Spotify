@@ -1,0 +1,53 @@
+* {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.player-bottom {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+  max-height: 100px;
+  width: 100%;
+  border-top: solid #c3c3c3 1px;
+  background-color: #121212;
+}
+
+
+.menu-item {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #c3c3c3;
+}
+
+.menu-item:hover {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: #c3c3c3;
+}
+
+.MuiButtonBase-root {
+  color: white !important;
+  border: 2px solid #c3c3c3 !important;
+  border-radius: 50px !important;
+  cursor: pointer;
+}
+
+.MuiButtonBase-root:hover {
+  border: 2px solid white !important;
+}
