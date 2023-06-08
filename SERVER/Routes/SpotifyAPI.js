@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 
 router.post('/token', async (req, res) => {
+  
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
 
@@ -19,7 +20,6 @@ router.post('/token', async (req, res) => {
           }
         }
       );
-
       if (response.status === 200) {
         const { access_token, expires_in, token_type } = response.data;
         return res.json({ access_token, expires_in, token_type });
@@ -30,7 +30,6 @@ router.post('/token', async (req, res) => {
       console.error('Error retrieving token:', error.message);
     }
   };
-
   getToken();
 });
 

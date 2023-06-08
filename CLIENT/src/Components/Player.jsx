@@ -8,11 +8,9 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import RepeatOneIcon from '@mui/icons-material/RepeatOne';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import {Box, Stack, Slider} from '@mui/material';
 
 export default function Player() {
     const [volume, setVolume] = useState(30);
@@ -20,7 +18,6 @@ export default function Player() {
     const [isLiked, setIsLiked] = useState(false)
     const [isRepeat, setIsRepeat] = useState(false)
     const [isRandom, setIsRandom] = useState(false)
-
 
     const handleChange = (event, newValue) => {
         setVolume(newValue);
