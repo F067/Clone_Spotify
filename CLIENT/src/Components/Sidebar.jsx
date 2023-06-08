@@ -6,7 +6,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import ChairIcon from '@mui/icons-material/Chair';
 import { Button } from '@mui/material';
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const drawerWidth = 300;
 
 export default function Sidebar() {
@@ -40,7 +40,9 @@ export default function Sidebar() {
                         return (
                             <div key={index} style={{ display: "flex", alignItems: "center", marginTop: 10, cursor: "pointer" }}>
                                 <Icon style={{ fontSize: 28 }} />
-                                <span className='menu-item'>{el.title}</span>
+                                <span className='menu-item'>
+                                    <Link to={el.title === "Accueil" ? "/": el.title === "Bibliothèque" ? "/Library" : null}>{el.title}</Link>
+                                </span>
                             </div>
                         )
                     })
@@ -53,7 +55,9 @@ export default function Sidebar() {
                         return (
                             <div key={index} style={{ display: "flex", alignItems: "center", marginTop: 10, cursor: "pointer" }}>
                                 <Icon style={{ fontSize: 28 }} />
-                                <span className='menu-item'>{el.title}</span>
+                                <span className='menu-item'>
+                                <Link to={el.title === "Créer une playlist" ? "/Playlist": el.title === "Titres likés" ? "/FavoriteSongs" : null}>{el.title}</Link>
+                                    </span>
                             </div>
                         )
                     })
@@ -72,7 +76,7 @@ export default function Sidebar() {
                 </div>
             </div>
             <div style={{ marginTop: 30, padding: 10 }}>
-                <Button onClick={() => handleLanguage()} style={{ fontSize: 10 }} variant='outlined'><LanguageIcon style={{ marginRight: 5, fontSize: 20 }} />Français</Button>
+                <Button onClick={() => handleLanguage()} style={{ fontSize: 12 }} variant='outlined'><LanguageIcon style={{ marginRight: 5, fontSize: 20 }} />Français</Button>
             </div>
         </div>
     );
