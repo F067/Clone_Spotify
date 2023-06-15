@@ -17,9 +17,9 @@ export const callPost = async (url, data) => {
   }
 }
 
-export const callGet = async (url, data) => {
+export const callGet = async (url) => {
   try {
-    const response = await axios.get("http://localhost:3001" + url, { data });
+    const response = await axios.get("http://localhost:3001" + url);
 
     if (response.status === 200) {
       if (response.data) {

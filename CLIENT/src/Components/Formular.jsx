@@ -6,7 +6,7 @@ function Formular(props) {
   const {setOpen} = props
 
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
 
@@ -23,12 +23,12 @@ function Formular(props) {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", backgroundColor: "white", borderRadius: "20px", width: "auto", height: "auto", padding: "20px" }}>
-        <h1 style={{ fontWeight: "bold", textAlign: "center" }}>Log in to Music Player</h1>
+        <h1 style={{ fontWeight: "bold", textAlign: "center" }}>Connectez vous à Music Player</h1>
         <form onSubmit={handleSubmit}>
           <TextField
-            name="username"
-            label="Username"
-            value={formData.username}
+            name="email"
+            label="Email"
+            value={formData.email}
             onChange={handleChange}
             variant="outlined"
             margin="normal"
@@ -36,7 +36,7 @@ function Formular(props) {
           />
           <TextField
             name="password"
-            label="Password"
+            label="Mot de passe"
             value={formData.password}
             onChange={handleChange}
             variant="outlined"
@@ -47,7 +47,7 @@ function Formular(props) {
           <Button
             type="submit"
             style={{ fontSize: 12, backgroundColor: "black" }} variant='outlined'>
-            Submit
+            Connexion
           </Button>
         </form>
       </div>
