@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs')
 
-var userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
     firstName: String,
     name: String,
     email: String,
@@ -34,6 +34,6 @@ userSchema.methods.matchPassword = async function (password) {
         throw new Error(error);
     }
 };
-var userModel = mongoose.model("users", userSchema)
+let userModel = mongoose.model("users", userSchema)
 
 module.exports = userModel
