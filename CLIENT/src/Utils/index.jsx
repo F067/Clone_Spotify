@@ -13,9 +13,16 @@ export const callPost = async (url, data) => {
     }
   } catch (error) {
     // Une erreur s'est produite lors de la requête
-    throw new Error("Request failed: " + error.message);
+    if (error.response && error.response.data && error.response.data.error) {
+      // Si le backend a renvoyé un message d'erreur
+      throw new Error("Request failed: " + error.response.data.error);
+    } else {
+      // Si aucune erreur spécifique du backend n'est disponible
+      throw new Error("Request failed: " + error.message);
+    }
   }
 }
+
 
 export const callGet = async (url) => {
   try {
