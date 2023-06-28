@@ -24,6 +24,8 @@ function Layout() {
 
   const user = useSelector((state) => state.user.user)
 
+  console.log(user)
+
   const [open, setOpen] = useState(true);
 
   const handleClose = (e, r) => {
@@ -36,12 +38,15 @@ function Layout() {
 
   return (
     <div style={{ display: "flex" }}>
+
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{ style: { backgroundColor: 'transparent' } }} >
         <Formular setOpen={setOpen} />
+
       </Dialog>
+
       <Sidebar />
       <Player />
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>

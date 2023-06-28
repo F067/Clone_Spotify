@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const getAccessToken = async (req, res) => {
+//get spotifyToken
+const getAccessToken = async () => {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
 
@@ -15,10 +16,11 @@ const getAccessToken = async (req, res) => {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
-    );
-    if (response.status === 201) {
+    );console.log(response)
+    if (response.status === 200) {
+
       const { access_token, expires_in, token_type } = response.data;
-      return res.json({ access_token, expires_in, token_type });
+      return { access_token, expires_in, token_type };
     } else {
       console.error('Failed to retrieve token:', response.data.error);
     }

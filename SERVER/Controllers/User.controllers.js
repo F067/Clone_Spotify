@@ -1,4 +1,5 @@
 const userModel = require('../Models/UserModel');
+const {getAccessToken} = require('./Spotify.controllers')
 
 // Créer un nouvel utilisateur
 exports.createUser = async (req, res) => {
@@ -21,7 +22,8 @@ exports.createUser = async (req, res) => {
       password,
     });
     if (newUser) {
-      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser });
+      let spotifyToken = await getAccessToken()
+      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser, token : spotifyToken });
     } else {
       return res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
     }
@@ -48,7 +50,9 @@ exports.signInUser = async (req, res) => {
     // Vérification du mot de passe
     const isMatch = await userExist.matchPassword(password);
     if (isMatch) {
-      return res.status(201).json({userExist});
+      let spotifyToken = await getAccessToken()
+      
+      return res.status(201).json({userExist: userExist, token : spotifyToken});
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
     }

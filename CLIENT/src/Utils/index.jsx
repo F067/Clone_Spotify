@@ -8,7 +8,7 @@ export const callPost = async (url, data) => {
       // La requête a été traitée avec succès
       return response.data;
     } else {
-      // La requête a échoué avec un statut autre que 200
+      // La requête a échoué avec un statut autre que 201
       throw new Error("Request failed with status: " + response.status);
     }
   } catch (error) {

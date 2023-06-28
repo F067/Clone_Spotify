@@ -42,7 +42,9 @@ function Formular(props) {
       })
       if (resApi) {
         console.log(resApi)
-        dispatch(setUser(resApi.userExist))
+        let user = resApi.userExist
+        user.token = resApi.token
+        dispatch(setUser(user))
         setOpen(false);
       }
     }
@@ -55,8 +57,9 @@ function Formular(props) {
       });
 
       if (resApi.user) {
-       
-        dispatch(setUser(resApi.user))
+        let user = resApi.user
+        user.token = resApi.token
+        dispatch(setUser(user))
         setOpen(false);
       }
     }
