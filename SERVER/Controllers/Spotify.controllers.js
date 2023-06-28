@@ -16,7 +16,7 @@ const getAccessToken = async (req, res) => {
         }
       }
     );
-    if (response.status === 200) {
+    if (response.status === 201) {
       const { access_token, expires_in, token_type } = response.data;
       return res.json({ access_token, expires_in, token_type });
     } else {

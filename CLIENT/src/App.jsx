@@ -4,7 +4,6 @@ import { callPost } from './Utils';
 import { useDispatch } from 'react-redux';
 import { setAccessToken, setExpiresAt, setTokenType } from './Store/Token/slice';
 import Layout from './Screens/Layout';
-import './App.css'
 
 function App() {
 

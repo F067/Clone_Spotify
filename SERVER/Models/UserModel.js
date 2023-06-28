@@ -8,6 +8,15 @@ let userSchema = mongoose.Schema({
     password: String,
     playlist: [mongoose.Types.ObjectId]
 })
+
+//retirer le mot de passe des recherches en front
+userSchema.set('toJSON', {
+    transform: function (doc, ret) {
+      delete ret.password;
+      return ret;
+    },
+  });
+
 userSchema.pre('save', async function (next) {
     try {
         if (!this.isModified('password')) {

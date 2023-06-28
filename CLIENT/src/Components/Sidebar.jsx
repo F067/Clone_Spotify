@@ -76,7 +76,7 @@ export default function Sidebar() {
                 </div>
             </div>
             <div style={{ marginTop: 30, padding: 10 }}>
-                <Button onClick={() => handleLanguage()} style={{ fontSize: 12 }} variant='outlined'><LanguageIcon style={{ marginRight: 5, fontSize: 20 }} />Français</Button>
+                <Button className='myButton' onClick={() => handleLanguage()} style={{ fontSize: 12 }} variant='outlined'><LanguageIcon style={{ marginRight: 5, fontSize: 20 }} />Français</Button>
             </div>
         </div>
     );

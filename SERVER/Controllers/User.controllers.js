@@ -48,7 +48,7 @@ exports.signInUser = async (req, res) => {
     // Vérification du mot de passe
     const isMatch = await userExist.matchPassword(password);
     if (isMatch) {
-      return res.status(200).json(userExist);
+      return res.status(201).json(userExist);
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
     }
