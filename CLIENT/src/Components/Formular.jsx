@@ -3,7 +3,7 @@ import { TextField, Button, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
 import { useDispatch } from 'react-redux';
-import { setSignedupUser, setSignedinUser } from '../Store/User/slice';
+import { setUser } from '../Store/User/slice';
 
 
 const theme = createTheme({
@@ -42,6 +42,7 @@ function Formular(props) {
       })
       if (resApi) {
         console.log(resApi)
+        dispatch(setUser(resApi.userExist))
         setOpen(false);
       }
     }
@@ -54,14 +55,8 @@ function Formular(props) {
       });
 
       if (resApi.user) {
-        const newUser = {
-          firstName: resApi.user.firstName,
-          name: resApi.user.name,
-          email: resApi.user.email,
-          password: resApi.user.password,
-          id: resApi.user._id
-        }
-        dispatch(setSignedupUser(newUser))
+       
+        dispatch(setUser(resApi.user))
         setOpen(false);
       }
     }

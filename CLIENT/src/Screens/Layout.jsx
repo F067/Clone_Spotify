@@ -7,15 +7,22 @@ import FavoriteSongs from './FavoriteSongs';
 import Sidebar from '../Components/Sidebar'
 import Player from '../Components/Player'
 import Formular from '../Components/Formular';
+import { useSelector } from 'react-redux';
 
-function Hello() {
+function Hello(props) {
   return (
     <div>
-      Hello
+      {props.user &&
+        <span>
+          Salut {props.user.firstName}
+        </span>
+      }
     </div>
   )
 }
 function Layout() {
+
+  const user = useSelector((state) => state.user.user)
 
   const [open, setOpen] = useState(true);
 
@@ -39,7 +46,7 @@ function Layout() {
       <Player />
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
         <Routes>
-          <Route exact path="/" element={<Hello />} />
+          <Route exact path="/" element={<Hello user={user} />} />
           <Route path="/Library" element={<Library />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/FavoriteSongs" element={<FavoriteSongs />} />
