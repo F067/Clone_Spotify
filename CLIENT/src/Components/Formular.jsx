@@ -9,10 +9,11 @@ import { setUser } from '../Store/User/slice';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#121212', // Remplacez cette valeur par votre couleur primaire préférée
+      main: '#121212'
     },
   },
 });
+const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9]).{8,}$/;
 
 function Formular(props) {
 
@@ -28,6 +29,9 @@ function Formular(props) {
   });
 
   const [isLogin, setIsLogin] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isEmptyField, setIsEmptyField] = useState([]);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,34 +39,63 @@ function Formular(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      const resApi = await callPost("/users/signIn", {
-        email: formData.email,
-        password: formData.password
-      })
-      if (resApi) {
-        console.log(resApi)
-        let user = resApi.userExist
-        user.token = resApi.token
-        dispatch(setUser(user))
-        setOpen(false);
-      }
-    }
-    else {
-      const resApi = await callPost('/users/signUp', {
-        firstName: formData.firstName,
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      });
+    const errors = [];
 
-      if (resApi.user) {
-        let user = resApi.user
-        user.token = resApi.token
-        dispatch(setUser(user))
+    if (isLogin) {
+      try {
+        const requiredFields = ['email', 'password'];
+        const errors = [];
+
+        requiredFields.forEach(field => {
+          if (formData[field] === '') {
+            errors.push(field);
+          }
+        });
+
+        setIsEmptyField(errors);
+
+        const resApi = await callPost("/users/signIn", {
+          email: formData.email,
+          password: formData.password
+        });
+        let user = resApi.userExist;
+        user.token = resApi.token;
+        dispatch(setUser(user));
         setOpen(false);
+      } catch (error) {
+        setErrorMessage(error.message);
       }
     }
+
+    else {
+
+      try {
+        const requiredFields = ['firstName', 'name', 'email', 'password'];
+        const errors = [];
+
+        requiredFields.forEach(field => {
+          if (formData[field] === '') {
+            errors.push(field);
+          }
+        });
+
+        setIsEmptyField(errors);
+
+        const resApi = await callPost('/users/signUp', {
+          firstName: formData.firstName,
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        });
+        let user = resApi.user;
+        user.token = resApi.token;
+        dispatch(setUser(user));
+        setOpen(false);
+      } catch (error) {
+        setErrorMessage(error.message)
+      }
+    }
+
   };
 
   const handleLogin = () => {
@@ -75,18 +108,36 @@ function Formular(props) {
         <h1 style={{ fontWeight: "bold", textAlign: "center" }}>{` ${!isLogin ? "Créez votre compte" : "Connectez-vous à"}  Music Player`}</h1>
         <ThemeProvider theme={theme} >
           <div style={{ display: "flex", justifyContent: 'center', padding: "16px" }}>
-            <ButtonGroup>
-              <Button style={{ borderTopLeftRadius: "50px", borderBottomLeftRadius: "50px" }} onClick={handleLogin} variant={isLogin ? "contained" : "outlined"}>Connexion</Button>
-              <Button style={{ borderTopRightRadius: "50px", borderBottomRightRadius: "50px" }} onClick={handleLogin} variant={!isLogin ? "contained" : "outlined"}>Créer un compte</Button>
+            <ButtonGroup >
+              <Button
+                style={{ borderTopLeftRadius: "50px", borderBottomLeftRadius: "50px" }}
+                onClick={handleLogin}
+                variant={!isLogin ? "contained" : "outlined"}
+                disabled={isLogin}
+              >
+                Connexion
+              </Button>
+              <Button
+                style={{ borderTopRightRadius: "50px", borderBottomRightRadius: "50px" }}
+                onClick={handleLogin}
+                variant={isLogin ? "contained" : "outlined"}
+                disabled={!isLogin}
+              >
+                Créer un compte
+              </Button>
             </ButtonGroup>
           </div>
         </ThemeProvider>
 
+        <div style={{ textAlign: "center", marginBottom: "15px", width: "auto", fontSize:"12px", display:"flex", justifyContent:"center" }}>
+          {errorMessage && (
+            <div style={{maxWidth:"80%", }} className="error-message">{errorMessage}</div>
+          )}
+        </div>
 
 
         <form onSubmit={handleSubmit}>
-          {
-            !isLogin &&
+          {!isLogin && (
             <div>
               <TextField
                 name="firstName"
@@ -95,8 +146,9 @@ function Formular(props) {
                 onChange={handleChange}
                 variant="outlined"
                 margin="dense"
-                size='small'
+                size="small"
                 fullWidth
+                error={isEmptyField.includes("firstName")}
               />
               <TextField
                 name="name"
@@ -105,11 +157,12 @@ function Formular(props) {
                 onChange={handleChange}
                 variant="outlined"
                 margin="dense"
-                size='small'
+                size="small"
                 fullWidth
+                error={isEmptyField.includes("name")}
               />
             </div>
-          }
+          )}
           <TextField
             name="email"
             label="Email"
@@ -117,8 +170,9 @@ function Formular(props) {
             onChange={handleChange}
             variant="outlined"
             margin="dense"
-            size='small'
+            size="small"
             fullWidth
+            error={isEmptyField.includes("email")}
           />
           <TextField
             name="password"
@@ -127,19 +181,18 @@ function Formular(props) {
             onChange={handleChange}
             variant="outlined"
             margin="dense"
-            size='small'
+            size="small"
             fullWidth
             type="password"
+            error={isEmptyField.includes("password") || !passwordRegex.test(formData.password)}
           />
           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: "16px" }}>
-            <Button className='myButton black'
-              type="submit"
-              variant='outlined'>
+            <Button className='myButton black' type="submit" variant='outlined'>
               {isLogin ? "Se connecter" : "S'enregistrer"}
             </Button>
           </div>
-
         </form>
+
       </div>
     </div>
   );

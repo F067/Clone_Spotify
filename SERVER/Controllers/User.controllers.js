@@ -1,5 +1,9 @@
 const userModel = require('../Models/UserModel');
-const {getAccessToken} = require('./Spotify.controllers')
+const { getAccessToken } = require('./Spotify.controllers');
+
+// Regex pour la validation du mot de passe
+const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9]).{8,}$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Créer un nouvel utilisateur
 exports.createUser = async (req, res) => {
@@ -14,6 +18,14 @@ exports.createUser = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: 'Cet utilisateur existe déjà' });
     }
+    // Validation du mot de passe
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ error: '8 caractères, 1 lettre majuscule, 1 caractère spécial, 1 chiffre' });
+    }
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Le format de l'email n'est pas correct" })
+    }
     // Création du nouvel utilisateur
     const newUser = await userModel.create({
       firstName,
@@ -22,13 +34,12 @@ exports.createUser = async (req, res) => {
       password,
     });
     if (newUser) {
-      let spotifyToken = await getAccessToken()
-      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser, token : spotifyToken });
+      let spotifyToken = await getAccessToken();
+      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser, token: spotifyToken });
     } else {
       return res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
     }
   } catch (error) {
-    console.error('Erreur lors de la création de l\'utilisateur:', error);
     return res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
   }
 };
@@ -47,12 +58,18 @@ exports.signInUser = async (req, res) => {
     if (!userExist) {
       return res.status(404).json({ error: 'L\'utilisateur n\'existe pas' });
     }
+    // Validation du mot de passe
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ error: '8 caractères, 1 lettre majuscule, 1 caractère spécial, 1 chiffre' });
+    }
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Le format de l'email n'est pas correct" })
+    }
     // Vérification du mot de passe
     const isMatch = await userExist.matchPassword(password);
     if (isMatch) {
-      let spotifyToken = await getAccessToken()
-      
-      return res.status(201).json({userExist: userExist, token : spotifyToken});
+      let spotifyToken = await getAccessToken();
+      return res.status(201).json({ userExist: userExist, token: spotifyToken });
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
     }

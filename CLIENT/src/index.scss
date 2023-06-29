@@ -46,12 +46,15 @@ a {
   border: 2px solid #c3c3c3 !important;
   border-radius: 50px !important;
   cursor: pointer;
+
   &.black {
     background-color: #121212;
   }
+
   &:hover {
     border: 2px solid white !important;
   }
+
   &.black:hover {
     background-color: white;
     color: #121212 !important;
@@ -59,3 +62,9 @@ a {
   }
 }
 
+.error-message {
+  color: #BD1E1E;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
