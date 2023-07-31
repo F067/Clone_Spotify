@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import { Dialog } from '@mui/material';
+import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Library from './Library';
 import Playlist from './Playlist';
 import FavoriteSongs from './FavoriteSongs';
 import Sidebar from '../Components/Sidebar'
 import Player from '../Components/Player'
-import Formular from '../Components/Formular';
+import UserAvatarIcon from '../Components/UserAvatarIcon';
 import { useSelector } from 'react-redux';
 
 function Hello(props) {
@@ -23,37 +22,21 @@ function Hello(props) {
 function Layout() {
 
   const user = useSelector((state) => state.user.user)
-
-  const [open, setOpen] = useState(true);
-
-  const handleClose = (e, r) => {
-    if (r = "backdropClick") {
-      return
-    } else {
-      setOpen(false)
-    }
-  }
-
+  
   return (
     <div style={{ display: "flex" }}>
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{ style: { backgroundColor: 'transparent' } }} >
-        <Formular setOpen={setOpen} />
-
-      </Dialog>
-
       <Sidebar />
       <Player />
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
-        <Routes>
-          <Route exact path="/" element={<Hello user={user} />} />
-          <Route path="/Library" element={<Library />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/FavoriteSongs" element={<FavoriteSongs />} />
-        </Routes>
+      <div style={{ width: "100%", margin: "20px" }}>
+        <div style={{ display: "flex", justifyContent: "end" }}><UserAvatarIcon /></div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
+          <Routes>
+            <Route exact path="/" element={<Hello user={user} />} />
+            <Route path="/Library" element={<Library />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/FavoriteSongs" element={<FavoriteSongs />} />
+          </Routes>
+        </div>
       </div>
     </div>
   )

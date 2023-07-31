@@ -1,7 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const spotifyController = require('../Controllers/Spotify.controllers');
+import { Router } from 'express';
+const router = Router();
 
 
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { connect } from 'mongoose';
 
-mongoose.connect(`mongodb+srv://Gregory:Greg120292@dbmusicplayer.ieioahi.mongodb.net/`, {
+connect(`mongodb+srv://Gregory:Greg120292@dbmusicplayer.ieioahi.mongodb.net/`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../Store/User/slice';
 
 
@@ -17,9 +17,9 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9]).{8,}$/;
 
 function Formular(props) {
 
-  const dispatch = useDispatch();
-
   const { setOpen } = props
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -59,7 +59,9 @@ function Formular(props) {
           password: formData.password
         });
         let user = resApi.userExist;
-        user.token = resApi.token;
+        if (resApi.JWT) {
+          localStorage.setItem('JWT', resApi.JWT)
+        }
         dispatch(setUser(user));
         setOpen(false);
       } catch (error) {
@@ -88,7 +90,9 @@ function Formular(props) {
           password: formData.password
         });
         let user = resApi.user;
-        user.token = resApi.token;
+        if (resApi.JWT) {
+          localStorage.setItem('JWT', resApi.JWT)
+        }
         dispatch(setUser(user));
         setOpen(false);
       } catch (error) {
@@ -129,9 +133,9 @@ function Formular(props) {
           </div>
         </ThemeProvider>
 
-        <div style={{ textAlign: "center", marginBottom: "15px", width: "auto", fontSize:"12px", display:"flex", justifyContent:"center" }}>
+        <div style={{ textAlign: "center", marginBottom: "15px", width: "auto", fontSize: "12px", display: "flex", justifyContent: "center" }}>
           {errorMessage && (
-            <div style={{maxWidth:"80%", }} className="error-message">{errorMessage}</div>
+            <div style={{ maxWidth: "80%", }} className="error-message">{errorMessage}</div>
           )}
         </div>
 

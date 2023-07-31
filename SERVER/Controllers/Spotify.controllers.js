@@ -1,7 +1,7 @@
-const axios = require('axios');
+import axios from 'axios';
 
 //get spotifyToken
-const getAccessToken = async () => {
+export const getAccessToken = async () => {
   const clientId = process.env.CLIENT_ID;
   const clientSecret = process.env.CLIENT_SECRET;
 
@@ -16,7 +16,7 @@ const getAccessToken = async () => {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
-    );console.log(response)
+    ); console.log(response)
     if (response.status === 200) {
 
       const { access_token, expires_in, token_type } = response.data;
@@ -29,6 +29,3 @@ const getAccessToken = async () => {
   }
 };
 
-module.exports = {
-  getAccessToken
-};
