@@ -8,7 +8,6 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Créer un nouvel utilisateur
 export async function createUser(req, res) {
-  console.log("coucou")
   try {
     const { firstName, name, email, password } = req.body;
     // Vérification des champs obligatoires
@@ -35,7 +34,6 @@ export async function createUser(req, res) {
       email,
       password,
     });
-    console.log(newUser)
     if (newUser) {
       //si l'utilisateur est crée alors generer un jwt
       const authToken = await jwt.sign({ _id: newUser._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600 })
@@ -74,7 +72,6 @@ export async function signInUser(req, res) {
     if (isMatch) {
       //si l'utilisateur correspond alors generer un jwt
       const authToken = await jwt.sign({ _id: userExist._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600})
-      // let spotifyToken = await getAccessToken();
       return res.status(201).json({ userExist: userExist, JWT: authToken });
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
@@ -89,10 +86,9 @@ export async function verifyJWT(req, res) {
     if (jwToken) {
       console.log(jwToken)
       try {
-        var decoded = jwt.verify(jwToken, process.env.JWT_SECRET)
-        console.log(decoded)
+        let decoded = jwt.verify(jwToken, process.env.JWT_SECRET)
         if (decoded) {
-          var user = await userModel.findOne({ _id: decoded._id })
+          let user = await userModel.findOne({ _id: decoded._id })
           return res.status(201).json({ user: user })
         }
       }
