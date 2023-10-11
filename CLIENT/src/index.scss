@@ -52,7 +52,7 @@ a {
   }
 
   &.red {
-    background-color: #BD1E1E;
+    background-color: #FB3741;
   }
 
   &:hover {
@@ -67,12 +67,12 @@ a {
 
   &.red:hover {
     border: 2px solid white !important;
-    background-color: #BD1E1E;
+    background-color: #FB3741;
   }
 }
 
 .error-message {
-  color: #BD1E1E;
+  color: #FB3741;
   display: flex;
   justify-content: center;
   font-weight: bold;

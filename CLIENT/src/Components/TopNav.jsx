@@ -9,13 +9,13 @@ function TopNav() {
   let name = user && user.firstName
 
   if (currentHour >= 0 && currentHour < 18) {
-    greeting = 'Bonjour';
+    greeting = 'Bonjour ';
   } else {
-    greeting = 'Bonsoir';
+    greeting = 'Bonsoir ';
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom:'50px' }}>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '50px' }}>
       <div
         style={{
           display: 'flex',
@@ -25,9 +25,13 @@ function TopNav() {
         }}
       >
         <span style={{ fontWeight: 'bold', display: 'flex' }}>
-          <div style={{marginRight:'8px'}}>
-          </div>
-          {greeting} {name}
+          {
+            user &&
+            <div>
+              {greeting}
+              {name}
+            </div>
+          }
         </span>
         <UserAvatarIcon />
       </div>

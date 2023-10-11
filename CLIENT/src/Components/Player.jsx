@@ -10,7 +10,7 @@ import RepeatOneIcon from '@mui/icons-material/RepeatOne';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
-import {Box, Stack, Slider} from '@mui/material';
+import { Box, Stack, Slider } from '@mui/material';
 
 export default function Player() {
     const [volume, setVolume] = useState(30);
@@ -75,31 +75,68 @@ export default function Player() {
                             )
                         })
                     }
-                    <div style={{ marginLeft: " 20px", fontSize: "5px", color: isLiked ? "#20CA5F" : "#FFFF" }}><FavoriteIcon onClick={() => handleLike()} /></div>
+                    <div style={{ marginLeft: " 20px", fontSize: "5px", color: isLiked ? "#FB3741" : "#FFFF" }}>
+                        <FavoriteIcon
+                            className='icon'
+                            onClick={() => handleLike()}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-                    <ShuffleIcon onClick={() => handleRandomSongs()} style={{ fontSize: 30, color: isRandom ? "#20CA5F" : "#FFFF" }} />
-                    <FastRewindIcon style={{ fontSize: 30 }} />
+                    <ShuffleIcon
+                        className='icon'
+                        onClick={() => handleRandomSongs()}
+                        style={{ fontSize: 30, color: isRandom ? "#FB3741" : "#FFFF" }}
+                    />
+                    <FastRewindIcon
+                        className='icon'
+                        style={{ fontSize: 30 }}
+                    />
                     {
                         isPlaying ?
-                            <PauseCircleIcon onClick={() => handlePlayOrPause()} style={{ fontSize: 50 }} />
+                            <PauseCircleIcon
+                                className='icon'
+                                onClick={() => handlePlayOrPause()}
+                                style={{ fontSize: 50 }}
+                            />
                             :
-                            <PlayCircleIcon onClick={() => handlePlayOrPause()} style={{ fontSize: 50 }} />
+                            <PlayCircleIcon
+                                className='icon'
+                                onClick={() => handlePlayOrPause()}
+                                style={{ fontSize: 50 }}
+                            />
                     }
-                    <FastForwardIcon style={{ fontSize: 30 }} />
+                    <FastForwardIcon
+                        className='icon'
+                        style={{ fontSize: 30 }}
+                    />
                     {
                         isRepeat ?
-                            < RepeatOneIcon onClick={() => handleRepeat()} style={{ fontSize: 30, color: "#20CA5F" }} />
+                            < RepeatOneIcon
+                                className='icon'
+                                onClick={() => handleRepeat()}
+                                style={{ fontSize: 30, color: "#FB3741" }}
+                            />
                             :
-                            <RepeatIcon onClick={() => handleRepeat()} style={{ fontSize: 30 }} />
+                            <RepeatIcon
+                                className='icon'
+                                onClick={() => handleRepeat()}
+                                style={{ fontSize: 30 }}
+                            />
                     }
                 </div>
                 <div>
                     <Box sx={{ width: 200 }}>
                         <Stack spacing={2} direction="row" alignItems="center">
-                            <VolumeDown onClick={() => handleVolumeDown()} />
+                            <VolumeDown
+                                className='icon'
+                                onClick={() => handleVolumeDown()}
+                            />
                             <Slider sx={{ color: '#FFF' }} aria-label="Volume" value={volume} onChange={handleChange} />
-                            <VolumeUp onClick={() => handleVolumeUp()} />
+                            <VolumeUp
+                                className='icon'
+                                onClick={() => handleVolumeUp()}
+                            />
                         </Stack>
                     </Box>
                 </div>

@@ -66,7 +66,7 @@ export default function Sidebar() {
                 alignItems: "center",
                 marginTop: 10,
                 cursor: "pointer",
-                color: isSelected && "#1ED760",
+                color: isSelected && "#FB3741",
               }}
               onClick={() => handleMenuItemClick(el.title)}
             >
@@ -90,7 +90,7 @@ export default function Sidebar() {
                 alignItems: "center",
                 marginTop: 10,
                 cursor: "pointer",
-                color: isSelected && "#1ED760",
+                color: isSelected && "#FB3741",
               }}
               onClick={() => handleMenuItemClick(el.title)}
             >
