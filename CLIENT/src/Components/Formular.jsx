@@ -3,7 +3,7 @@ import { TextField, Button, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../Store/User/slice';
+import { setUser, setToken } from '../Store/User/slice';
 
 
 const theme = createTheme({
@@ -19,7 +19,6 @@ function Formular(props) {
 
   const { setOpen } = props
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -39,21 +38,16 @@ function Formular(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = [];
-
     if (isLogin) {
       try {
         const requiredFields = ['email', 'password'];
         const errors = [];
-
         requiredFields.forEach(field => {
           if (formData[field] === '') {
             errors.push(field);
           }
         });
-
         setIsEmptyField(errors);
-
         const resApi = await callPost("/users/signIn", {
           email: formData.email,
           password: formData.password
@@ -61,6 +55,7 @@ function Formular(props) {
         let user = resApi.userExist;
         if (resApi.JWT) {
           localStorage.setItem('JWT', resApi.JWT)
+          dispatch(setToken(resApi.JWT))
         }
         dispatch(setUser(user));
         setOpen(false);
@@ -68,30 +63,27 @@ function Formular(props) {
         setErrorMessage(error.message);
       }
     }
-
     else {
-
       try {
         const requiredFields = ['firstName', 'name', 'email', 'password'];
         const errors = [];
-
         requiredFields.forEach(field => {
           if (formData[field] === '') {
             errors.push(field);
           }
         });
-
         setIsEmptyField(errors);
-
         const resApi = await callPost('/users/signUp', {
           firstName: formData.firstName,
           name: formData.name,
           email: formData.email,
           password: formData.password
         });
+
         let user = resApi.user;
         if (resApi.JWT) {
           localStorage.setItem('JWT', resApi.JWT)
+          dispatch(setToken(resApi.JWT))
         }
         dispatch(setUser(user));
         setOpen(false);
@@ -99,7 +91,6 @@ function Formular(props) {
         setErrorMessage(error.message)
       }
     }
-
   };
 
   const handleLogin = () => {

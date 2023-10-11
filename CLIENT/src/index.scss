@@ -51,6 +51,10 @@ a {
     background-color: #121212;
   }
 
+  &.red {
+    background-color: #BD1E1E;
+  }
+
   &:hover {
     border: 2px solid white !important;
   }
@@ -59,6 +63,11 @@ a {
     background-color: white;
     color: #121212 !important;
     border: 2px solid #121212 !important;
+  }
+
+  &.red:hover {
+    border: 2px solid white !important;
+    background-color: #BD1E1E;
   }
 }
 

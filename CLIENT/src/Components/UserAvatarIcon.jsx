@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, Stack, Dialog, Slide } from '@mui/material';
 import UserProfile from './UserProfile';
-import Batman from '../Images/Batman.png'
+import { useDispatch, useSelector } from "react-redux";
+import { setReset } from "../Store/User/slice";
+import { getImageFromUser } from '../Utils';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -9,8 +11,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function UserAvatarIcon() {
 
-
     const [open, setOpen] = useState(false)
+    const [avatar, setAvatar] = useState(null)
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.user);
+
+    useEffect(() => {
+        setAvatar(getImageFromUser(user))
+    }, [user])
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -18,8 +27,13 @@ function UserAvatarIcon() {
 
     const handleClose = () => {
         setOpen(false);
-        console.log("caca")
     };
+
+    const handleLogOut = () => {
+        setOpen(false)
+        dispatch(setReset())
+        localStorage.removeItem("JWT")
+    }
 
     return (
         <div  >
@@ -31,15 +45,20 @@ function UserAvatarIcon() {
             >
                 <UserProfile
                     handleClose={handleClose}
+                    handleLogOut={handleLogOut}
                 />
 
             </Dialog>
+            {
+                user &&
+                <Stack
+                    className='icon'
+                    onClick={handleClickOpen} direction="row" spacing={2}
+                >
+                    <Avatar alt="icon" src={avatar} sizes='80px' />
+                </Stack>
+            }
 
-            <Stack
-                className='icon'
-                onClick={handleClickOpen} direction="row" spacing={2}>
-                <Avatar alt="Travis Howard" src={Batman} />
-            </Stack>
         </div>
     )
 }

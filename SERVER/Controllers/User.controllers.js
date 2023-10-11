@@ -33,6 +33,7 @@ export async function createUser(req, res) {
       name,
       email,
       password,
+      avatar: "hendrix"
     });
     if (newUser) {
       //si l'utilisateur est crée alors generer un jwt
@@ -71,7 +72,7 @@ export async function signInUser(req, res) {
     const isMatch = await userExist.matchPassword(password);
     if (isMatch) {
       //si l'utilisateur correspond alors generer un jwt
-      const authToken = await jwt.sign({ _id: userExist._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600})
+      const authToken = await jwt.sign({ _id: userExist._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600 })
       return res.status(201).json({ userExist: userExist, JWT: authToken });
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
@@ -81,22 +82,63 @@ export async function signInUser(req, res) {
   }
 }
 
+// Modifier le profil d'un utilisateur
+export async function updateUserProfile(req, res) {
+  try {
+    const { firstName, name, email, avatar } = req.body;
+
+    // Vérification des champs obligatoires
+    if (!firstName || !name || !email || !avatar) {
+      return res.status(400).json({ error: 'Tous les champs doivent être remplis' });
+    }
+    // Mettre à jour les informations
+    const updatedUser = await userModel.findOneAndUpdate(
+      { _id: req.user._id },
+      { $set: { firstName, name, email, avatar } },
+      { new: true } // Pour obtenir le nouvel utilisateur mis à jour
+    );
+    if (updatedUser) {
+      return res.status(201).json({ message: 'Profil mis à jour avec succès', user: updatedUser });
+    } else {
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour du profil' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Erreur' });
+  }
+}
+
+export async function deleteAccount(req, res) {
+  try {
+    const deletedUser = await userModel.findOneAndDelete({ _id: req.user._id });
+    
+    if (deletedUser) {
+      console.log(`Compte supprimé : ${deletedUser}`);
+      return res.status(201).json({ message: 'Compte supprimé' });
+    } else {
+      return res.status(404).json({ error: 'Aucun utilisateur trouvé pour la suppression' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Erreur lors de la suppression du compte' });
+  }
+}
+
 export async function verifyJWT(req, res) {
-    const { jwToken } = req.body
-    if (jwToken) {
-      console.log(jwToken)
-      try {
-        let decoded = jwt.verify(jwToken, process.env.JWT_SECRET)
-        if (decoded) {
-          let user = await userModel.findOne({ _id: decoded._id })
-          return res.status(201).json({ user: user })
-        }
-      }
-      catch (error){
-        return res.status(201).json({error: "validité exp"})
+  const { jwToken } = req.body
+  if (jwToken) {
+    console.log(jwToken)
+    try {
+      let decoded = jwt.verify(jwToken, process.env.JWT_SECRET)
+      if (decoded) {
+        let user = await userModel.findOne({ _id: decoded._id })
+        return res.status(201).json({ user: user })
       }
     }
-    else{
-      return res.status(500).json({ error: 'No token' })
+    catch (error) {
+      return res.status(201).json({ error: "validité exp" })
     }
+  }
+  else {
+    return res.status(500).json({ error: 'No token' })
+  }
 }

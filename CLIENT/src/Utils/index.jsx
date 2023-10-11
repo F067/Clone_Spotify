@@ -1,24 +1,55 @@
 import axios from 'axios'
+import ledz from '../Images/ledZep.png'
+import Drums from '../Images/Drums.png'
+import hendrix from '../Images/hendrix.png'
+import ElecG from '../Images/ElecG.png'
 
-export const callPost = async (url, data) => {
+
+export const callPost = async (url, data, token) => {
   try {
-    const response = await axios.post("http://localhost:3001" + url, data);
-
+    let headers = {};
+    if (token) {
+      // si token ajoute le dans le headers
+      headers.Authorization = `Bearer ${token}`
+    }
+    const response = await axios.post("http://localhost:3001" + url, data, { headers: headers });
     if (response.status === 201) {
       // La requête a été traitée avec succès
       return response.data;
     } else {
       // La requête a échoué avec un statut autre que 201
-      throw new Error( response.status);
+      throw new Error(response.status);
     }
   } catch (error) {
     // Une erreur s'est produite lors de la requête
     if (error.response && error.response.data && error.response.data.error) {
       // Si le backend a renvoyé un message d'erreur
-      throw new Error( error.response.data.error);
+      throw new Error(error.response.data.error);
     } else {
       // Si aucune erreur spécifique du backend n'est disponible
-      throw new Error( error.message);
+      throw new Error(error.message);
+    }
+  }
+}
+
+export const getImageFromUser = (user) => {
+  if (user) {
+    switch (user.avatar) {
+      case "hendrix":
+        return hendrix
+        break;
+      case "ledz":
+        return ledz
+        break;
+        case "Drums":
+        return Drums
+        break;
+        case "ElecG":
+        return ElecG
+        break;
+      default:
+        return ElecG
+        break;
     }
   }
 }

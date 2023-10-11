@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import pkg from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 const { genSalt, hash, compare } = pkg;
 
@@ -10,6 +9,7 @@ let userSchema = mongoose.Schema({
     email: String,
     password: String,
     playlist: [mongoose.Types.ObjectId],
+    avatar:String
 })
 
 //retirer le mot de passe des recherches en front
