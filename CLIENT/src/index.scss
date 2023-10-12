@@ -81,3 +81,35 @@ a {
 .icon{
   cursor: pointer;
 }
+
+
+.carrousel-container {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carrousel {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.card {
+  width: 300px;
+  margin-right: 20px;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.scroll-button {
+  background-color: #FB3741;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.scroll-button:hover {
+  background-color: #0056b3;
+}

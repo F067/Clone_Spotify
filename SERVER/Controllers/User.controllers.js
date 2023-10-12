@@ -1,5 +1,6 @@
 import userModel from '../Models/UserModel.js';
 import jwt from 'jsonwebtoken'
+import { getAccessToken } from './Spotify.controllers.js';
 
 
 // Regex pour la validation du mot de passe
@@ -38,7 +39,8 @@ export async function createUser(req, res) {
     if (newUser) {
       //si l'utilisateur est crée alors generer un jwt
       const authToken = await jwt.sign({ _id: newUser._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600 })
-      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser, JWT: authToken });
+      let spotifyToken = await getAccessToken()
+      return res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser, JWT: authToken, spotifyToken: spotifyToken });
     } else {
       return res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
     }
@@ -73,7 +75,8 @@ export async function signInUser(req, res) {
     if (isMatch) {
       //si l'utilisateur correspond alors generer un jwt
       const authToken = await jwt.sign({ _id: userExist._id.toString() }, process.env.JWT_SECRET, { expiresIn: 3600 })
-      return res.status(201).json({ userExist: userExist, JWT: authToken });
+      let spotifyToken = await getAccessToken()
+      return res.status(201).json({ userExist: userExist, JWT: authToken, spotifyToken: spotifyToken });
     } else {
       return res.status(401).json({ error: 'Mauvais mot de passe' });
     }
@@ -110,7 +113,7 @@ export async function updateUserProfile(req, res) {
 export async function deleteAccount(req, res) {
   try {
     const deletedUser = await userModel.findOneAndDelete({ _id: req.user._id });
-    
+
     if (deletedUser) {
       console.log(`Compte supprimé : ${deletedUser}`);
       return res.status(201).json({ message: 'Compte supprimé' });
@@ -126,12 +129,12 @@ export async function deleteAccount(req, res) {
 export async function verifyJWT(req, res) {
   const { jwToken } = req.body
   if (jwToken) {
-    console.log(jwToken)
     try {
       let decoded = jwt.verify(jwToken, process.env.JWT_SECRET)
       if (decoded) {
         let user = await userModel.findOne({ _id: decoded._id })
-        return res.status(201).json({ user: user })
+        let spotifyToken = await getAccessToken()
+        return res.status(201).json({ user: user, spotifyToken: spotifyToken })
       }
     }
     catch (error) {

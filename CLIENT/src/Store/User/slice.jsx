@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     user: null,
-    token: null
+    token: null,
+    spotifyToken: null
 };
 
 const userSlice = createSlice({
@@ -16,9 +17,12 @@ const userSlice = createSlice({
         setToken(state, action) {
             state.token = action.payload;
         },
+        setSpotifyToken(state, action) {
+            state.spotifyToken = action.payload
+        },
         setReset: () => initialState
     },
 });
 
-export const { setUser, setToken, setReset } = userSlice.actions;
+export const { setUser, setToken, setReset, setSpotifyToken } = userSlice.actions;
 export default userSlice.reducer;

@@ -3,7 +3,7 @@ import { TextField, Button, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setToken } from '../Store/User/slice';
+import { setUser, setToken, setSpotifyToken } from '../Store/User/slice';
 
 
 const theme = createTheme({
@@ -56,6 +56,7 @@ function Formular(props) {
         if (resApi.JWT) {
           localStorage.setItem('JWT', resApi.JWT)
           dispatch(setToken(resApi.JWT))
+          dispatch(setSpotifyToken(resApi.spotifyToken))
         }
         dispatch(setUser(user));
         setOpen(false);
@@ -86,6 +87,7 @@ function Formular(props) {
           dispatch(setToken(resApi.JWT))
         }
         dispatch(setUser(user));
+        dispatch(setSpotifyToken(resApi.spotifyToken))
         setOpen(false);
       } catch (error) {
         setErrorMessage(error.message)

@@ -12,18 +12,33 @@ import Music from '../Images/Music.png';
 const drawerWidth = 300;
 
 export default function Sidebar() {
-  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+
+  const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
   const menu = [
-    { title: "Accueil", icon: ChairIcon },
-    { title: "Rechercher", icon: SearchIcon },
-    { title: "Bibliothèque", icon: SubscriptionsIcon },
+    { title: "Accueil", icon: ChairIcon, key: "Home", link:"/Home" },
+    { title: "Rechercher", icon: SearchIcon, key: "Search", link:"/Search"  },
+    { title: "Bibliothèque", icon: SubscriptionsIcon, key: "Library", link:"/Library"  },
   ];
 
   const menu2 = [
-    { title: "Créer une playlist", icon: AddToPhotosIcon },
-    { title: "Titres likés", icon: FavoriteIcon },
+    { title: "Créer une playlist", icon: AddToPhotosIcon, key: "Playlist", link:"/Playlist"  },
+    { title: "Titres likés", icon: FavoriteIcon, key: "FavoriteSongs", link:"/FavoriteSongs"  },
   ];
+
+  useEffect(() => {
+    const currentPath = window.location.pathname
+    const pathSegments = currentPath.split("/")
+    let path = null
+    if (menu.find(el => el.key === pathSegments[pathSegments.length - 1])) {
+      setSelectedMenuItem(menu.find(el => el.key === pathSegments[pathSegments.length - 1]).title)
+    }
+    else {
+      if (menu2.find(el => el.key === pathSegments[pathSegments.length - 1])) {
+        setSelectedMenuItem(menu2.find(el => el.key === pathSegments[pathSegments.length - 1]).title)
+      }
+    }
+  }, [])
 
   const handleMenuItemClick = (menuItem) => {
     setSelectedMenuItem(menuItem);
@@ -72,7 +87,7 @@ export default function Sidebar() {
             >
               <Icon style={{ fontSize: 28 }} />
               <span className='menu-item'>
-                <Link to={el.title === "Accueil" ? "/" : el.title === "Bibliothèque" ? "/Library" : null}>{el.title}</Link>
+                <Link to={el.link}>{el.title}</Link>
               </span>
             </div>
           );
@@ -96,7 +111,7 @@ export default function Sidebar() {
             >
               <Icon style={{ fontSize: 28 }} />
               <span className='menu-item'>
-                <Link to={el.title === "Créer une playlist" ? "/Playlist" : el.title === "Titres likés" ? "/FavoriteSongs" : null}>{el.title}</Link>
+                <Link to={el.link}>{el.title}</Link>
               </span>
             </div>
           );

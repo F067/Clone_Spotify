@@ -18,7 +18,7 @@ function Layout() {
         <TopNav />
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/Home" element={<Home />} />
             <Route path="/Library" element={<Library />} />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/FavoriteSongs" element={<FavoriteSongs />} />

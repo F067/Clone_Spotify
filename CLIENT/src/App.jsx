@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Layout from './Screens/Layout';
 import { callPost } from './Utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setToken } from './Store/User/slice';
+import { setUser, setToken, setSpotifyToken } from './Store/User/slice';
 import { Dialog } from '@mui/material';
 import Formular from './Components/Formular';
 import { ToastContainer } from 'react-toastify';
@@ -40,6 +40,7 @@ function App() {
         if (resApi && resApi.user) {
           dispatch(setUser(resApi.user))
           dispatch(setToken(JWT))
+          dispatch(setSpotifyToken(resApi.spotifyToken))
         }
         else {
           localStorage.removeItem('JWT')
