@@ -71,7 +71,7 @@ export default function UserProfile(props) {
 
         }, token)
         if (resApi) {
-            toast.success("compte supprimé avec succés")
+            toast.success("Compte supprimé !")
             dispatch(setReset())
             localStorage.removeItem("JWT")
             setOpenConfirmModal(false)

@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     user: null,
     token: null,
-    spotifyToken: null
+    spotifyToken: null,
+    playlistLibrary: []
 };
 
 const userSlice = createSlice({
@@ -20,9 +21,12 @@ const userSlice = createSlice({
         setSpotifyToken(state, action) {
             state.spotifyToken = action.payload
         },
+        setPlaylistLibrary(state, action) {
+            state.playlistLibrary = action.payload
+        },
         setReset: () => initialState
     },
 });
 
-export const { setUser, setToken, setReset, setSpotifyToken } = userSlice.actions;
+export const { setUser, setToken, setReset, setSpotifyToken, setPlaylistLibrary } = userSlice.actions;
 export default userSlice.reducer;

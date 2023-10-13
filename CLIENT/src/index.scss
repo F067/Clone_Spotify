@@ -25,7 +25,6 @@
   background-color: #121212;
 }
 
-
 .menu-item {
   margin-left: 10px;
   font-size: 16px;
@@ -52,7 +51,7 @@ a {
   }
 
   &.red {
-    background-color: #FB3741;
+    background-color: #fb3741;
   }
 
   &:hover {
@@ -67,49 +66,54 @@ a {
 
   &.red:hover {
     border: 2px solid white !important;
-    background-color: #FB3741;
+    background-color: #fb3741;
   }
 }
 
 .error-message {
-  color: #FB3741;
+  color: #fb3741;
   display: flex;
   justify-content: center;
   font-weight: bold;
 }
 
-.icon{
+.icon {
   cursor: pointer;
 }
 
-
-.carrousel-container {
+.thisIs-container {
   display: flex;
-  align-items: center;
-  overflow: hidden;
-  width: 100%;
-}
-
-.carrousel {
-  display: flex;
-  transition: transform 0.5s ease;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .card {
-  width: 300px;
-  margin-right: 20px;
-  padding: 20px;
-  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 15%;
+  color: #C3C3C3;
+  border-radius: 20px;
+  padding: 15px;
+
+  &.card:hover {
+    cursor: pointer;
+    background-color: #C3C3C3;
+    color: black;
+  }
 }
 
 .scroll-button {
-  background-color: #FB3741;
-  color: white;
+  color: #fb3741;
+  background: transparent;
   border: none;
-  font-size: 24px;
+  font-size: 45px;
   cursor: pointer;
+  padding: 0 10px;
 }
 
-.scroll-button:hover {
-  background-color: #0056b3;
+.scrollable-paper {
+  max-height: 80vh;
+  overflow-y: auto;
 }
