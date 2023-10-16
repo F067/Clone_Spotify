@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import AddIcon from '@mui/icons-material/Add';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Slide from '@mui/material/Slide';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { setPlaylistLibrary } from '../Store/User/slice';
+import Wait from '../Components/Wait';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
+
+const style = {
+  width: '100%',
+  maxWidth: 360,
+  bgcolor: 'background.paper',
+};
 
 function Home() {
 
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const addedPlaylist = useSelector((state) => state.user.playlistLibrary);
   const spotifyToken = useSelector((state) => state.user.spotifyToken?.access_token);
   const [localData, setLocalData] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState([]);
 
   const getThisIsFromSpotify = async () => {
     try {
@@ -35,13 +45,9 @@ function Home() {
       }
       );
       if (res) {
-        // Obtenir les éléments de la réponse de l'API
         const playlists = res.data.playlists.items;
-
-        // Mélanger les éléments de manière aléatoire
         const shuffledPlaylists = shuffleArray(playlists);
         const initialLocalData = shuffledPlaylists.map(item => ({ ...item, addedToLibrary: false }));
-        // Stocker les données mélangées dans localData
         setLocalData(initialLocalData);
       }
     } catch (error) {
@@ -58,19 +64,23 @@ function Home() {
   }
 
   const handleAddToLibrary = (index) => {
-    const updatedLibrary = [...localData];
-    const selectedPlaylistCopy = [...selectedPlaylist];
-    selectedPlaylistCopy.push(updatedLibrary[index]);
-    setSelectedPlaylist(selectedPlaylistCopy);
-    dispatch(setPlaylistLibrary(selectedPlaylistCopy));
+    const temp = [...addedPlaylist];
+    const selectedPlaylist = localData[index];
+    const isPlaylistInLibrary = temp.some((playlist) => playlist.id === selectedPlaylist.id);
+    if (!isPlaylistInLibrary) {
+      temp.push(selectedPlaylist);
+      toast.success(`La playlist ${selectedPlaylist.name} a été ajoutée à la bibliothèque.`);
+      dispatch(setPlaylistLibrary(temp));
+    } else {
+      toast.error('Cette playlist est déjà dans votre bibliothèque.');
+    }
   };
-
-
 
   const handleShowDescription = (index) => {
     setSelectedItemIndex(index);
     setOpen(true);
   }
+
   const handleClose = () => {
     setOpen(false)
   }
@@ -82,57 +92,59 @@ function Home() {
   }, [spotifyToken]);
 
   return (
-    user && localData && localData.length && (
-      <Paper sx={{ backgroundColor: '#121212' }} className="scrollable-paper">
+    user && localData && localData.length > 0 ?
+      (
+        <div className="scrollable-paper">
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                {selectedItemIndex !== null && (
+                  <List sx={style} component="nav" aria-label="mailbox folders">
+                    <ListItem divider>
+                      <ListItemText primary={localData[selectedItemIndex].description} />
+                    </ListItem>
+                    <Divider light />
+                    <ListItem>
+                      <ListItemText primary={localData[selectedItemIndex].tracks.total + " pistes dans cette Playlist"} />
+                    </ListItem>
+                  </List>
+                )}
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
 
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              {selectedItemIndex !== null && (
+          <div className='thisIs-container'>
+            {localData.map((item, index) => (
+              <div
+                className="card"
+                key={index}
+              >
                 <div >
-                  <h2 style={{ color: 'black', margin: "10px" }}>
-                    {localData[selectedItemIndex].description}
-                  </h2>
-                  <h2 style={{ color: 'black', margin: "10px" }}>
-                    {localData[selectedItemIndex].tracks.total} pistes dans cette Playlist
-                  </h2>
+                  <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
+                  <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
+                  <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
+                    <PlaylistAddIcon
+                      style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
+                      onClick={() => {
+                        handleAddToLibrary(index);
+                      }}
+                    />
+                    <MoreVertIcon onClick={() => handleShowDescription(index)} />
+                  </h3>
                 </div>
-              )}
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-
-        <div className='thisIs-container'>
-          {localData.map((item, index) => (
-            <div
-              className="card"
-              key={index}
-            >
-              <div >
-                <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
-                <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
-                <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
-                  <AddIcon
-                    style={{ color: item.addedToLibrary && "#fb3741" }}
-                    onClick={() => {
-                      handleAddToLibrary(index);
-                      setSelectedPlaylist(localData[index]);
-                    }}
-                  />
-                  <MoreVertIcon onClick={() => handleShowDescription(index)} />
-                </h3>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </Paper>
-    )
+      ) :
+      user &&
+      <Wait />
   );
 }
 

@@ -7,6 +7,7 @@ import Sidebar from '../Components/Sidebar'
 import Player from '../Components/Player'
 import TopNav from '../Components/TopNav';
 import Home from './Home';
+import Search from './Search';
 
 function Layout() {
 
@@ -21,6 +22,7 @@ function Layout() {
             <Route exact path="/Home" element={<Home />} />
             <Route path="/Library" element={<Library />} />
             <Route path="/playlist" element={<Playlist />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/FavoriteSongs" element={<FavoriteSongs />} />
           </Routes>
         </div>

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser, setToken, setSpotifyToken } from '../Store/User/slice';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 const theme = createTheme({
@@ -19,6 +21,10 @@ function Formular(props) {
 
   const { setOpen } = props
   const dispatch = useDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -171,6 +177,7 @@ function Formular(props) {
             fullWidth
             error={isEmptyField.includes("email")}
           />
+
           <TextField
             name="password"
             label="Mot de passe"
@@ -180,9 +187,23 @@ function Formular(props) {
             margin="dense"
             size="small"
             fullWidth
-            type="password"
+            type={showPassword ? "text" : "password"}
             error={isEmptyField.includes("password") || !passwordRegex.test(formData.password)}
           />
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            {
+              showPassword ?
+                <Visibility
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleClickShowPassword}
+                />
+                :
+                <VisibilityOff
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleClickShowPassword}
+                />
+            }
+          </div>
           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: "16px" }}>
             <Button className='myButton black' type="submit" variant='outlined'>
               {isLogin ? "Se connecter" : "S'enregistrer"}

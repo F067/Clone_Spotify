@@ -84,7 +84,8 @@ a {
 .thisIs-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content:center;
+  background-color: #121212;
 }
 
 .card {
@@ -99,8 +100,7 @@ a {
 
   &.card:hover {
     cursor: pointer;
-    background-color: #C3C3C3;
-    color: black;
+
   }
 }
 
@@ -114,6 +114,8 @@ a {
 }
 
 .scrollable-paper {
-  max-height: 80vh;
+  height: 70vh;
+  width: 80vw;
   overflow-y: auto;
+  background-color: #121212;
 }

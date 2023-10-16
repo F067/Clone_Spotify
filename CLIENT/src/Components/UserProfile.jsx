@@ -24,7 +24,7 @@ const StyledTableCellTitle = styled(TableCell)(() => ({
 
 const StyledTextField = styled(TextField)(() => ({
     marginBottom: '20px',
-    width: "80vw",
+    width:"40vw"
 }))
 
 export default function UserProfile(props) {
@@ -84,7 +84,7 @@ export default function UserProfile(props) {
     return (
         <div style={{ backgroundColor: "black", height: "100%" }}>
 
-            <Dialog open={openConfirmModal}>
+            <Dialog sx={{backgroundColor:"black"}} open={openConfirmModal}>
                 <div style={{ display: "flex", justifyContent: "space-between", textAlign: 'center', alignItems: "center" }}>
                     <span style={{ marginLeft: "10px", fontWeight: "bold" }}>Suppression</span>
                     <IconButton
@@ -92,10 +92,10 @@ export default function UserProfile(props) {
                     > <CloseIcon />
                     </IconButton>
                 </div>
-                <div style={{margin: "25px"}}>
+                <div style={{ margin: "25px" }}>
                     Etes-vous sûr de vouloir supprimer votre compte ? cette action est irreversible et implique aussi la suppression de toutes vos playlists ainsi que de vos titres likés
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', margin:"10px" }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', margin: "10px" }}>
                     <Button
                         onClick={() => handleDeleteAccount()}
                         className='myButton red'>
@@ -106,11 +106,9 @@ export default function UserProfile(props) {
 
             <Dialog
                 open={open}
-                maxWidth={'xl'}
+                maxWidth={'l'}
             >
                 <div style={{ padding: "30px" }}>
-
-
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <span style={{ marginLeft: "10px", fontWeight: "bold" }}>Modifier mon profil</span>
                         <IconButton
@@ -119,7 +117,6 @@ export default function UserProfile(props) {
                         </IconButton>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
-
                         <StyledTextField
                             onChange={handleChange}
                             name='email'
@@ -138,8 +135,6 @@ export default function UserProfile(props) {
                             label="Prénom"
                             type="text"
                             defaultValue={user?.firstName} />
-
-
                     </div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         {
@@ -189,7 +184,7 @@ export default function UserProfile(props) {
                     <Avatar sx={{ height: "150px", width: "150px", cursor: "pointer", margin: "20px" }} alt="Travis Howard" src={getImageFromUser(user)} />
                 </div>
 
-                <TableContainer sx={{ width: "60%", marginBottom: "30px" }} >
+                <TableContainer sx={{ width: "30%", marginBottom: "30px" }} >
                     <Table aria-label="customized table">
                         <TableBody>
                             <TableRow>
@@ -221,7 +216,7 @@ export default function UserProfile(props) {
 
                 </TableContainer>
 
-                <div style={{ display: 'flex', justifyContent: 'space-around', width: "90%" }}>
+                <div style={{ display: 'flex', justifyContent: 'space-around', width: "40%" }}>
                     <Button
                         onClick={() => setOpen(true)}
                         className='myButton'>
