@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, ButtonGroup } from '@mui/material';
+import { TextField, Button, ButtonGroup, InputAdornment, IconButton } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { callPost } from '../Utils';
 import { useDispatch } from 'react-redux';
@@ -187,23 +187,23 @@ function Formular(props) {
             margin="dense"
             size="small"
             fullWidth
-            type={showPassword ? "text" : "password"}
-            error={isEmptyField.includes("password") || !passwordRegex.test(formData.password)}
-          />
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            {
-              showPassword ?
-                <Visibility
-                  style={{ cursor: 'pointer' }}
-                  onClick={handleClickShowPassword}
-                />
-                :
-                <VisibilityOff
-                  style={{ cursor: 'pointer' }}
-                  onClick={handleClickShowPassword}
-                />
+            type={showPassword ? 'text' : 'password'}
+            error={
+              isEmptyField.includes('password') || !passwordRegex.test(formData.password)
             }
-          </div>
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: "16px" }}>
             <Button className='myButton black' type="submit" variant='outlined'>
               {isLogin ? "Se connecter" : "S'enregistrer"}

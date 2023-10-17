@@ -4,7 +4,6 @@ import Drums from '../Images/Drums.png'
 import hendrix from '../Images/hendrix.png'
 import ElecG from '../Images/ElecG.png'
 
-
 export const callPost = async (url, data, token) => {
   try {
     let headers = {};
@@ -41,10 +40,10 @@ export const getImageFromUser = (user) => {
       case "ledz":
         return ledz
         break;
-        case "Drums":
+      case "Drums":
         return Drums
         break;
-        case "ElecG":
+      case "ElecG":
         return ElecG
         break;
       default:
@@ -53,3 +52,32 @@ export const getImageFromUser = (user) => {
     }
   }
 }
+
+export const getThisIsFromSpotify = async (spotifyToken, limit) => {
+  try {
+    const res = await axios.get(
+      "https://api.spotify.com/v1/search?query=this+is&type=playlist&include_external=audio&locale=fr-FR%2Cfr%3Bq%3D0.9%2Cen-US%3Bq%3D0.8%2Cen%3Bq%3D0.7&offset=0&limit=" + limit, {
+      headers: {
+        Authorization: `Bearer ${spotifyToken}`,
+      },
+    }
+    );
+    if (res) {
+      const playlists = res.data.playlists.items;
+      const shuffledPlaylists = shuffleArray(playlists);
+      const initialLocalData = shuffledPlaylists.map(item => ({ ...item, addedToLibrary: false }));
+      return initialLocalData
+    }
+  } catch (error) {
+    console.error("Erreur lors de la requête à l'API Spotify : ", error);
+  }
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+

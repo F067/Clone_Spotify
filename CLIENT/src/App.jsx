@@ -8,6 +8,7 @@ import { Dialog } from '@mui/material';
 import Formular from './Components/Formular';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Home from './Screens/Home';
 
 
 function App() {
@@ -71,8 +72,8 @@ function App() {
         open={open}
         onClose={handleClose}
         PaperProps={{ style: { backgroundColor: 'transparent' } }} >
+          <Home/>
         <Formular setOpen={setOpen} />
-
       </Dialog>
       <Layout />
     </BrowserRouter>
