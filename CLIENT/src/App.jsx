@@ -72,7 +72,7 @@ function App() {
         open={open}
         onClose={handleClose}
         PaperProps={{ style: { backgroundColor: 'transparent' } }} >
-          <Home/>
+        <Home />
         <Formular setOpen={setOpen} />
       </Dialog>
       <Layout />

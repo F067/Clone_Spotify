@@ -1,0 +1,41 @@
+@startuml Gregofy
+
+!define ManyToMany relationship
+
+package "Entities" {
+  class User {
+    - Firstname
+    - LastName
+    - Mail
+    - Password
+    - photo
+    + add Photo (Avatar)
+    + login(username: String, password: String): boolean
+    + signup(username: String, password: String, email: String): boolean
+    + addPlaylistToLibrary(playlist: Playlist): void
+  }
+
+  class Playlist {
+    - Title
+    - Number of songs
+    - Description
+    + addTrack(track: Track): void
+    + removeTrack(track: Track): void
+  }
+
+  class Track {
+    - Name
+    - Duration
+    - Artist
+    - Album
+    + play(): void
+    // don't know what else to add!
+  }
+}
+
+User "1" --o "0..*" Playlist : Owns
+User "*" --o "0..*" Track : Likes
+User "*" --o "0..*" Playlist : Library
+Playlist "*" --o "0..*" Track : Contains
+
+@enduml
