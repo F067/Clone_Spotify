@@ -14,6 +14,8 @@ import { toast } from 'react-toastify';
 import { setPlaylistLibrary } from '../Store/User/slice';
 import Wait from '../Components/Wait';
 import { getThisIsFromSpotify } from '../Utils';
+import { getPlaylistTracks } from '../Utils';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -34,6 +36,7 @@ function Home() {
   const spotifyToken = useSelector((state) => state.user.spotifyToken?.access_token);
   const [localData, setLocalData] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+
 
   const handleAddToLibrary = (index) => {
     const temp = [...addedPlaylist];
@@ -59,8 +62,19 @@ function Home() {
 
   const getPlaylists = async () => {
     let res = await getThisIsFromSpotify(spotifyToken, 50)
-    if(res){
+    if (res) {
       setLocalData(res)
+    }
+  }
+
+  const getTracks = async (spotifyToken, index) => {
+    if (index >= 0 && index < localData.length) {
+      let playlistId = localData[index].id;
+
+      let res = await getPlaylistTracks(spotifyToken, playlistId);
+      if (res) {
+        console.log("Titres de la playlist : ", res);
+      }
     }
   }
 
@@ -99,11 +113,12 @@ function Home() {
           </Dialog>
 
           <div className='thisIs-container'>
-          
+
             {localData.map((item, index) => (
               <div
                 className="card"
                 key={index}
+                onClick={() => getTracks(spotifyToken, index)}
               >
                 <div >
                   <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />

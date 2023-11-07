@@ -3,15 +3,14 @@ import pkg from 'bcryptjs';
 
 const { genSalt, hash, compare } = pkg;
 
-let userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     firstName: String,
     name: String,
     email: String,
     password: String,
-    playlist: [mongoose.Types.ObjectId],
-    avatar:String
-})
-
+    playlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist' }],
+    avatar: String
+});
 //retirer le mot de passe des recherches en front
 userSchema.set('toJSON', {
     transform: function (doc, ret) {

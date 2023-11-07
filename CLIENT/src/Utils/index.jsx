@@ -73,6 +73,25 @@ export const getThisIsFromSpotify = async (spotifyToken, limit) => {
   }
 }
 
+
+export const getPlaylistTracks = async (spotifyToken, playlistId) => {
+  try {
+    const res = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      headers: {
+        Authorization: `Bearer ${spotifyToken}`,
+      },
+    });
+    if (res) {
+      const tracks = res.data.items;
+      // Faites ce que vous voulez avec les titres, par exemple, les stocker dans un état local
+      console.log("Titres de la playlist actuelle : ", tracks);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des titres de la playlist : ", error);
+  }
+}
+
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
