@@ -13,9 +13,7 @@ import Divider from '@mui/material/Divider';
 import { toast } from 'react-toastify';
 import { setPlaylistLibrary } from '../Store/User/slice';
 import Wait from '../Components/Wait';
-import { getThisIsFromSpotify } from '../Utils';
-import { getPlaylistTracks } from '../Utils';
-
+import { getThisIsFromSpotify, getPlaylistTracks } from '../Utils';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -36,6 +34,8 @@ function Home() {
   const spotifyToken = useSelector((state) => state.user.spotifyToken?.access_token);
   const [localData, setLocalData] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+  const [localTracks, setLocalTracks] = useState(null);
+  const [showTracks, setShowTracks] = useState(false);
 
 
   const handleAddToLibrary = (index) => {
@@ -70,9 +70,10 @@ function Home() {
   const getTracks = async (spotifyToken, index) => {
     if (index >= 0 && index < localData.length) {
       let playlistId = localData[index].id;
-
       let res = await getPlaylistTracks(spotifyToken, playlistId);
       if (res) {
+        setLocalTracks(res)
+        setShowTracks(true);
         console.log("Titres de la playlist : ", res);
       }
     }
@@ -113,29 +114,40 @@ function Home() {
           </Dialog>
 
           <div className='thisIs-container'>
-
-            {localData.map((item, index) => (
-              <div
-                className="card"
-                key={index}
-                onClick={() => getTracks(spotifyToken, index)}
-              >
-                <div >
-                  <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
-                  <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
-                  <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
-                    <PlaylistAddIcon
-                      style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
-                      onClick={() => {
-                        handleAddToLibrary(index);
-                      }}
-                    />
-                    <MoreVertIcon onClick={() => handleShowDescription(index)} />
-                  </h3>
+            {showTracks ? (
+              localTracks && localTracks.map((track, index) => (
+                <div key={index} className="track-info">
+                  <h3>{track.name}</h3>
+                  <p>Artiste(s): {track.artists.map(artist => artist.name).join(', ')}</p>
+                  <p>Album: {track.album.name}</p>
+                  <p>Durée: {formatDuration(track.duration_ms)}</p>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              localData.map((item, index) => (
+                <div
+                  className="card"
+                  key={index}
+                  onClick={() => getTracks(spotifyToken, index)}
+                >
+                  <div>
+                    <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
+                    <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
+                    <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
+                      <PlaylistAddIcon
+                        style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
+                        onClick={() => {
+                          handleAddToLibrary(index);
+                        }}
+                      />
+                      <MoreVertIcon onClick={() => handleShowDescription(index)} />
+                    </h3>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
+
         </div>
       ) :
       user &&
