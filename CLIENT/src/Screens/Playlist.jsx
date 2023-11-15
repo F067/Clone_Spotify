@@ -4,7 +4,7 @@ import React from 'react'
 function Playlist() {
   return (
     <div>
-      playlist
+      <span style={{ color: "white", fontSize: "30px", fontWeight: "bold" }}>Fonctionnalité bientôt disponible!</span>
     </div>
   )
 }

@@ -11,9 +11,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { toast } from 'react-toastify';
-import { setPlaylistLibrary } from '../Store/User/slice';
+import { setPlaylistLibrary, setTrack } from '../Store/User/slice';
 import Wait from '../Components/Wait';
 import { getThisIsFromSpotify, getPlaylistTracks } from '../Utils';
+import FavoriteSongs from '../Components/FavoriteSongs';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -26,17 +27,15 @@ const style = {
 };
 
 function Home() {
+  const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const addedPlaylist = useSelector((state) => state.user.playlistLibrary);
   const spotifyToken = useSelector((state) => state.user.spotifyToken?.access_token);
   const [localData, setLocalData] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
-  const [localTracks, setLocalTracks] = useState(null);
-  const [showTracks, setShowTracks] = useState(false);
-
+  const [showTracks, setShowTracks] = useState(false)
 
   const handleAddToLibrary = (index) => {
     const temp = [...addedPlaylist];
@@ -67,14 +66,13 @@ function Home() {
     }
   }
 
-  const getTracks = async (spotifyToken, index) => {
+  const getTracks = async (index) => {
     if (index >= 0 && index < localData.length) {
       let playlistId = localData[index].id;
       let res = await getPlaylistTracks(spotifyToken, playlistId);
       if (res) {
-        setLocalTracks(res)
-        setShowTracks(true);
-        console.log("Titres de la playlist : ", res);
+        setShowTracks(true)
+        dispatch(setTrack(res));
       }
     }
   }
@@ -112,42 +110,35 @@ function Home() {
               </DialogContentText>
             </DialogContent>
           </Dialog>
-
           <div className='thisIs-container'>
-            {showTracks ? (
-              localTracks && localTracks.map((track, index) => (
-                <div key={index} className="track-info">
-                  <h3>{track.name}</h3>
-                  <p>Artiste(s): {track.artists.map(artist => artist.name).join(', ')}</p>
-                  <p>Album: {track.album.name}</p>
-                  <p>Durée: {formatDuration(track.duration_ms)}</p>
-                </div>
-              ))
-            ) : (
-              localData.map((item, index) => (
-                <div
-                  className="card"
-                  key={index}
-                  onClick={() => getTracks(spotifyToken, index)}
-                >
-                  <div>
-                    <img src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
-                    <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
-                    <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
-                      <PlaylistAddIcon
-                        style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
-                        onClick={() => {
-                          handleAddToLibrary(index);
-                        }}
-                      />
-                      <MoreVertIcon onClick={() => handleShowDescription(index)} />
-                    </h3>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
 
+            {
+              !showTracks ?
+
+                localData.map((item, index) => (
+                  <div
+                    className="card"
+                    key={index}
+                  >
+                    <div>
+                      <img onClick={() => getTracks(index)} src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
+                      <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
+                      <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
+                        <PlaylistAddIcon
+                          style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
+                          onClick={() => {
+                            handleAddToLibrary(index);
+                          }}
+                        />
+                        <MoreVertIcon onClick={() => handleShowDescription(index)} />
+                      </h3>
+                    </div>
+                  </div>
+                ))
+                :
+                <FavoriteSongs />
+            }
+          </div>
         </div>
       ) :
       user &&

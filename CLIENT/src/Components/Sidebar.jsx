@@ -23,7 +23,7 @@ export default function Sidebar() {
 
   const menu2 = [
     { title: "Créer une playlist", icon: AddToPhotosIcon, key: "Playlist", link:"/Playlist"  },
-    { title: "Titres likés", icon: FavoriteIcon, key: "FavoriteSongs", link:"/FavoriteSongs"  },
+    { title: "Titres likés", icon: FavoriteIcon, key: "Liked", link:"/Liked"  },
   ];
 
   useEffect(() => {

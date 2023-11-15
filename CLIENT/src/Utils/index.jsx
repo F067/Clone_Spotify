@@ -82,9 +82,7 @@ export const getPlaylistTracks = async (spotifyToken, playlistId) => {
       },
     });
     if (res) {
-      const tracks = res.data.items;
-      // Faites ce que vous voulez avec les titres, par exemple, les stocker dans un état local
-      console.log("Titres de la playlist actuelle : ", tracks);
+      return res.data.items;
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des titres de la playlist : ", error);
