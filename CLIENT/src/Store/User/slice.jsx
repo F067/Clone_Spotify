@@ -4,9 +4,9 @@ const initialState = {
     user: null,
     token: null,
     spotifyToken: null,
-    playlistLibrary: [],
     track: [],
-    likedSong: []
+    played: null,
+    volume: 70
 };
 
 const userSlice = createSlice({
@@ -22,18 +22,18 @@ const userSlice = createSlice({
         setSpotifyToken(state, action) {
             state.spotifyToken = action.payload
         },
-        setPlaylistLibrary(state, action) {
-            state.playlistLibrary = action.payload
-        },
         setTrack(state, action) {
             state.track = action.payload
         },
-        setLikedSong(state, action) {
-            state.likedSong = action.payload
+        setPlayed(state, action) {
+            state.played = action.payload
+        },
+        setVolume(state, action) {
+            state.volume = action.payload
         },
         setReset: () => initialState,
     },
 });
 
-export const { setUser, setToken, setReset, setSpotifyToken, setPlaylistLibrary, setTrack, setLikedSong } = userSlice.actions;
+export const { setUser, setToken, setReset, setSpotifyToken, setTrack, setLikedSong, setPlayed, setVolume } = userSlice.actions;
 export default userSlice.reducer;

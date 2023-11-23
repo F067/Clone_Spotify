@@ -15,16 +15,15 @@ function TopNav() {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '50px' }}>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px', padding:"20px" }}>
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
-          width: '13%',
         }}
       >
-        <span style={{ fontWeight: 'bold', display: 'flex' }}>
+        <div style={{ fontWeight: 'bold', display: 'flex', marginRight:"10px" }}>
           {
             user &&
             <div>
@@ -32,8 +31,8 @@ function TopNav() {
               {name}
             </div>
           }
-        </span>
-        <UserAvatarIcon />
+        </div>
+        <UserAvatarIcon/>
       </div>
     </div>
   );

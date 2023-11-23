@@ -4,7 +4,7 @@ import { getAccessToken } from './Spotify.controllers.js';
 
 
 // Regex pour la validation du mot de passe
-const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9]).{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=.*[0-9]).{8,}$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Créer un nouvel utilisateur

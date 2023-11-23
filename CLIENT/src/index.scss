@@ -13,6 +13,7 @@
 }
 
 .player-bottom {
+  z-index: 100;
   position: fixed;
   bottom: 0;
   display: flex;
@@ -45,6 +46,7 @@ a {
   border: 2px solid #c3c3c3 !important;
   border-radius: 50px !important;
   cursor: pointer;
+  margin: 5px !important;
 
   &.black {
     background-color: #121212;
@@ -94,7 +96,7 @@ a {
   align-items: center;
   text-align: center;
   width: 15%;
-  color: #C3C3C3;
+  color: #c3c3c3;
   padding: 15px;
 
   &.card:hover {
@@ -105,7 +107,7 @@ a {
   }
 
   &:not(:hover) {
-    color: #C3C3C3;
+    color: #c3c3c3;
     transition: 1.5s;
   }
 }
@@ -135,6 +137,54 @@ a {
   animation: spin 1s linear infinite;
 }
 
+.sidebar-style {
+  position: sticky;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  height: 100vh;
+}
+
+.no-click {
+  pointer-events: none;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #121212;
+  height: 50px;
+}
+
+.tableCustomHead {
+  border-bottom: #c3c3c3 solid 1px;
+}
+
+.tableCustom {
+  padding-top: 10px;
+}
+
+.urlTd {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search {
+  text-align: center;
+}
+
+.arrowBack {
+  color: #fb3741;
+  cursor: pointer;
+}
+
+.table-profile {
+  width: 30%;
+  margin-bottom: 30px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -145,12 +195,117 @@ a {
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .sidebar-style {
+    position: sticky;
+    min-width: 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    height: 100vh;
+  }
 
-.tableCustomHead {
-  padding-bottom: 20px;
-  font-weight: bold;
+  .sidebar-style-mobile {
+    position: sticky;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    height: 100vh;
+  }
+
+  .no-click {
+    pointer-events: all;
+  }
+
+  .thisIs-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+  }
+
+  .scrollable-paper {
+    height: 80vh;
+    width: 80vw;
+    overflow-y: auto;
+    background-color: #121212;
+  }
+
+  .scrollable-paper {
+    height: 90vh;
+    width: 80vw;
+    overflow-y: auto;
+    background-color: #121212;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 65%;
+    color: #c3c3c3;
+    padding: 15px;
+
+    &.card:hover {
+      cursor: pointer;
+      color: white;
+      opacity: 0.6;
+      transition: 1s;
+    }
+
+    &:not(:hover) {
+      color: #c3c3c3;
+      transition: 1.5s;
+    }
+  }
 }
 
-.tableCustom {
-  padding-top: 10px;
+@media screen and (max-width: 900px) {
+  .sidebar-style {
+    position: sticky;
+    min-width: 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    height: 100vh;
+  }
+
+  .sidebar-style-mobile {
+    position: sticky;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    height: 100vh;
+  }
+
+  .no-click {
+    pointer-events: all;
+  }
+
+  .mobile {
+    display: none;
+  }
+  .title-resolution {
+    display: none;
+  }
+
+  .scrollable-paper {
+    width: 80vw;
+    overflow-y: auto;
+    background-color: #121212;
+  }
+
+  .mobile-title {
+    text-align: center;
+  }
+
+  .table-profile {
+    width: 100%;
+    margin-bottom: 30px;
+  }
 }

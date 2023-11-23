@@ -10,10 +10,11 @@ import { config } from 'dotenv';
 import './Models/Db.js';
 //dotenv
 config()
-//cors
+//cors (autoriser la communication entre front et back depuis des domaines differents)
 app.use(cors());
-//routes
+//permet d'utiliser req.body
 app.use(json());
+//routes
 app.use('/spotify', SpotifyRoute);
 app.use('/users', UserRoute);
 //port

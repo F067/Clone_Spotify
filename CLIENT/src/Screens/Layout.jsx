@@ -7,21 +7,21 @@ import Sidebar from '../Components/Sidebar'
 import Player from '../Components/Player'
 import TopNav from '../Components/TopNav';
 import Home from './Home';
-import Search from './Search';
+import SearchPlaylists from './SearchPlaylists';
 
 function Layout() {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height:"100%" }}>
       <Sidebar />
       <Player />
-      <div style={{ width: "100%", margin: "20px" }}>
+      <div style={{ width: "100%"}}>
         <TopNav />
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
           <Routes>
-            <Route exact path="/Home" element={<Home />} />
+            <Route exact path="/" element={<Home />} />
             <Route path="/Library" element={<Library />} />
-            <Route path="/playlist" element={<Playlist />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/Playlist" element={<Playlist />} />
+            <Route path="/SearchPlaylists" element={<SearchPlaylists />} />
             <Route path="/Liked" element={<Liked />} />
           </Routes>
         </div>

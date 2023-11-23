@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AlbumIcon from '@mui/icons-material/Album';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
@@ -11,89 +11,84 @@ import ShuffleIcon from '@mui/icons-material/Shuffle';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import { Box, Stack, Slider } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPlayed, setVolume } from '../Store/User/slice';
 
 export default function Player() {
-    const [volume, setVolume] = useState(30);
-    const [isPlaying, setisPlaying] = useState(false)
-    const [isLiked, setIsLiked] = useState(false)
+    const dispatch = useDispatch();
     const [isRepeat, setIsRepeat] = useState(false)
     const [isRandom, setIsRandom] = useState(false)
 
+    const musicPlayed = useSelector((state) => state.user.played);
+    const volume = useSelector((state) => state.user.volume);
+
     const handleChange = (event, newValue) => {
-        setVolume(newValue);
+        dispatch(setVolume(newValue))
     };
 
     const handleVolumeDown = () => {
         if (volume > 0) {
-            setVolume(volume - 5)
+            dispatch(setVolume(volume - 5))
         }
         else {
-            setVolume(0)
+            dispatch(setVolume(0))
         }
     }
 
     const handleVolumeUp = () => {
         if (volume < 100) {
-            setVolume(volume + 5)
+            dispatch(setVolume(volume + 5))
         }
         else {
-            setVolume(100)
+            dispatch(setVolume(100))
         }
     }
 
     const handlePlayOrPause = () => {
-        setisPlaying(!isPlaying)
+        if (musicPlayed?.song && musicPlayed?.isPlaying) {
+            dispatch(setPlayed({ song: musicPlayed.song, isPlaying: null }))
+        }
+        else {
+            dispatch(setPlayed({ song: musicPlayed.song, isPlaying: musicPlayed.song }))
+        }
     }
-
-    const handleLike = () => {
-        setIsLiked(!isLiked)
-    }
-
     const handleRepeat = () => {
         setIsRepeat(!isRepeat)
     }
-
     const handleRandomSongs = () => {
         setIsRandom(!isRandom)
     }
 
-    const playerInfo = [
-        { title: "Comfortably Numb", artiste: "Pink Floyd" }
-    ]
     return (
         <div className='player-bottom'>
             <div style={{ minHeight: "5vw", margin: "0px", display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: "10px", paddingRight: "10px" }}>
-                <div style={{ display: "flex", alignItems: "center", }}>
-                    <div style={{ marginRight: "10px" }}><AlbumIcon style={{ fontSize: "80px" }} /></div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ marginRight: "10px" }}>{musicPlayed && musicPlayed.song.track ? <img src={musicPlayed.song.track.album.images[0].url} alt="album image" height="50px" /> : <AlbumIcon style={{ fontSize: "80px" }} />}</div>
                     {
-                        playerInfo.map((el, index) => {
-                            return (
-                                <div key={index}>
-                                    <h3 style={{ fontSize: "13px", fontWeight: "bold" }}>{el.title}</h3>
-                                    <p style={{ color: "#c3c3c3", fontSize: "11px" }}>{el.artiste}</p>
-                                </div>
-                            )
-                        })
+                        musicPlayed && musicPlayed.song.track &&
+                        <div>
+                            <h3 style={{ fontSize: "13px", fontWeight: "bold" }}>{musicPlayed.song.track.name}</h3>
+                            <p style={{ color: "#c3c3c3", fontSize: "11px" }}>{musicPlayed.song.track.artists[0].name}</p>
+                        </div>
                     }
-                    <div style={{ marginLeft: " 20px", fontSize: "5px", color: isLiked ? "#FB3741" : "#FFFF" }}>
-                        <FavoriteIcon
-                            className='icon'
-                            onClick={() => handleLike()}
-                        />
-                    </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-                    <ShuffleIcon
-                        className='icon'
-                        onClick={() => handleRandomSongs()}
-                        style={{ fontSize: 30, color: isRandom ? "#FB3741" : "#FFFF" }}
-                    />
-                    <FastRewindIcon
-                        className='icon'
-                        style={{ fontSize: 30 }}
-                    />
+                    <div className='mobile'>
+                        <ShuffleIcon
+                            className='icon'
+                            onClick={() => handleRandomSongs()}
+                            style={{ fontSize: 30, color: isRandom ? "#FB3741" : "#FFFF" }}
+                        />
+                    </div>
+                    <div className='mobile'>
+
+                        <FastRewindIcon
+                            className='icon'
+                            style={{ fontSize: 30 }}
+                        />
+                    </div>
                     {
-                        isPlaying ?
+                        musicPlayed && musicPlayed.song && musicPlayed.isPlaying ?
                             <PauseCircleIcon
                                 className='icon'
                                 onClick={() => handlePlayOrPause()}
@@ -106,26 +101,33 @@ export default function Player() {
                                 style={{ fontSize: 50 }}
                             />
                     }
-                    <FastForwardIcon
-                        className='icon'
-                        style={{ fontSize: 30 }}
-                    />
+                    <div className='mobile'>
+
+                        <FastForwardIcon
+                            className='icon'
+                            style={{ fontSize: 30 }}
+                        />
+                    </div>
                     {
                         isRepeat ?
-                            < RepeatOneIcon
-                                className='icon'
-                                onClick={() => handleRepeat()}
-                                style={{ fontSize: 30, color: "#FB3741" }}
-                            />
+                            <div className='mobile'>
+                                < RepeatOneIcon
+                                    className='icon'
+                                    onClick={() => handleRepeat()}
+                                    style={{ fontSize: 30, color: "#FB3741" }}
+                                />
+                            </div>
                             :
-                            <RepeatIcon
-                                className='icon'
-                                onClick={() => handleRepeat()}
-                                style={{ fontSize: 30 }}
-                            />
+                            <div className='mobile'>
+                                <RepeatIcon
+                                    className='icon'
+                                    onClick={() => handleRepeat()}
+                                    style={{ fontSize: 30 }}
+                                />
+                            </div>
                     }
                 </div>
-                <div>
+                {<div className='mobile'>
                     <Box sx={{ width: 200 }}>
                         <Stack spacing={2} direction="row" alignItems="center">
                             <VolumeDown
@@ -139,7 +141,7 @@ export default function Player() {
                             />
                         </Stack>
                     </Box>
-                </div>
+                </div>}
             </div>
         </div>
     )

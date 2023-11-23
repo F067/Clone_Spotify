@@ -8,7 +8,7 @@ import ElecG from '../Images/ElecG.png'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setReset } from '../Store/User/slice';
 import { styled } from "@mui/material/styles";
-import { callPost, getImageFromUser } from '../Utils';
+import { callPut, callDelete, getImageFromUser } from '../Utils';
 import { toast } from 'react-toastify';
 
 
@@ -24,7 +24,7 @@ const StyledTableCellTitle = styled(TableCell)(() => ({
 
 const StyledTextField = styled(TextField)(() => ({
     marginBottom: '20px',
-    width:"40vw"
+    width: "40vw"
 }))
 
 export default function UserProfile(props) {
@@ -54,7 +54,7 @@ export default function UserProfile(props) {
     };
 
     const handleSaveNewValue = async () => {
-        const resApi = await callPost("/users/updateUser", {
+        const resApi = await callPut("/users/updateUser", {
             firstName: userInfo.firstName,
             name: userInfo.name,
             email: userInfo.email,
@@ -67,7 +67,7 @@ export default function UserProfile(props) {
     }
 
     const handleDeleteAccount = async () => {
-        const resApi = await callPost("/users/deleteUser", {
+        const resApi = await callDelete("/users/deleteUser", {
 
         }, token)
         if (resApi) {
@@ -84,7 +84,7 @@ export default function UserProfile(props) {
     return (
         <div style={{ backgroundColor: "black", height: "100%" }}>
 
-            <Dialog sx={{backgroundColor:"black"}} open={openConfirmModal}>
+            <Dialog sx={{ backgroundColor: "black" }} open={openConfirmModal}>
                 <div style={{ display: "flex", justifyContent: "space-between", textAlign: 'center', alignItems: "center" }}>
                     <span style={{ marginLeft: "10px", fontWeight: "bold" }}>Suppression</span>
                     <IconButton
@@ -150,6 +150,7 @@ export default function UserProfile(props) {
                             })
                         }
                     </div>
+                    <Button sx={{ color: "black", fontWeight: "bold" }} onClick={handleSaveNewValue}> Sauvegarder</Button>
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                             onClick={() => setOpenConfirmModal(true)}
@@ -157,9 +158,6 @@ export default function UserProfile(props) {
                             Supprimer mon compte
                         </Button>
                     </div>
-
-
-                    <Button sx={{ color: "black", fontWeight: "bold" }} onClick={handleSaveNewValue}> Sauvegarder</Button>
 
                 </div>
             </Dialog>
@@ -184,39 +182,41 @@ export default function UserProfile(props) {
                     <Avatar sx={{ height: "150px", width: "150px", cursor: "pointer", margin: "20px" }} alt="Travis Howard" src={getImageFromUser(user)} />
                 </div>
 
-                <TableContainer sx={{ width: "30%", marginBottom: "30px" }} >
-                    <Table aria-label="customized table">
-                        <TableBody>
-                            <TableRow>
-                                <StyledTableCellTitle>
-                                    Adresse Email
-                                </StyledTableCellTitle>
-                                <StyledTableCell >
-                                    {user?.email}
-                                </StyledTableCell>
-                            </TableRow>
-                            <TableRow>
-                                <StyledTableCellTitle>
-                                    Nom
-                                </StyledTableCellTitle>
-                                <StyledTableCell  >
-                                    {user?.name}
-                                </StyledTableCell>
-                            </TableRow>
-                            <TableRow>
-                                <StyledTableCellTitle>
-                                    Prénom
-                                </StyledTableCellTitle>
-                                <StyledTableCell >
-                                    {user?.firstName}
-                                </StyledTableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
+                <div className="table-profile">
+                    <TableContainer >
+                        <Table aria-label="customized table"  >
+                            <TableBody>
+                                <TableRow>
+                                    <StyledTableCellTitle>
+                                        Adresse Email
+                                    </StyledTableCellTitle>
+                                    <StyledTableCell >
+                                        {user?.email}
+                                    </StyledTableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <StyledTableCellTitle>
+                                        Nom
+                                    </StyledTableCellTitle>
+                                    <StyledTableCell  >
+                                        {user?.name}
+                                    </StyledTableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <StyledTableCellTitle>
+                                        Prénom
+                                    </StyledTableCellTitle>
+                                    <StyledTableCell >
+                                        {user?.firstName}
+                                    </StyledTableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
 
-                </TableContainer>
+                    </TableContainer>
+                </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-around', width: "40%" }}>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <Button
                         onClick={() => setOpen(true)}
                         className='myButton'>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Dialog from '@mui/material/Dialog';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Slide from '@mui/material/Slide';
@@ -11,10 +11,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { toast } from 'react-toastify';
-import { setPlaylistLibrary, setTrack } from '../Store/User/slice';
+import { setTrack, setUser } from '../Store/User/slice';
 import Wait from '../Components/Wait';
-import { getThisIsFromSpotify, getPlaylistTracks } from '../Utils';
-import FavoriteSongs from '../Components/FavoriteSongs';
+import { getThisIsFromSpotify, getPlaylistTracks, callPost } from '../Utils';
+import CardItem from '../Components/CardItem';
+import TrackTable from '../Components/TrackTable';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -31,20 +32,23 @@ function Home() {
 
   const [open, setOpen] = React.useState(false);
   const user = useSelector((state) => state.user.user);
-  const addedPlaylist = useSelector((state) => state.user.playlistLibrary);
+  const addedPlaylist = useSelector((state) => state.user.user?.library);
   const spotifyToken = useSelector((state) => state.user.spotifyToken?.access_token);
+  const token = useSelector((state) => state.user.token);
+  const track = useSelector((state) => state.user.track);
   const [localData, setLocalData] = useState([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
   const [showTracks, setShowTracks] = useState(false)
 
-  const handleAddToLibrary = (index) => {
-    const temp = [...addedPlaylist];
-    const selectedPlaylist = localData[index];
-    const isPlaylistInLibrary = temp.some((playlist) => playlist.id === selectedPlaylist.id);
+  const handleAddToLibrary = async (index) => {
+    const selectedPlaylist = localData[index]
+    const isPlaylistInLibrary = addedPlaylist.some((id) => id === selectedPlaylist.id);
     if (!isPlaylistInLibrary) {
-      temp.push(selectedPlaylist);
-      toast.success(`La playlist ${selectedPlaylist.name} a été ajoutée à la bibliothèque.`);
-      dispatch(setPlaylistLibrary(temp));
+      const res = await callPost('/users/addToLibrary', { libId: selectedPlaylist.id }, token)
+      if (res) {
+        toast.success(`La playlist ${selectedPlaylist.name} a été ajoutée à la bibliothèque.`);
+        dispatch(setUser(res.user))
+      }
     } else {
       toast.error('Cette playlist est déjà dans votre bibliothèque.');
     }
@@ -75,6 +79,10 @@ function Home() {
         dispatch(setTrack(res));
       }
     }
+  }
+
+  const handleBack = () => {
+    setShowTracks(false)
   }
 
   useEffect(() => {
@@ -116,27 +124,18 @@ function Home() {
               !showTracks ?
 
                 localData.map((item, index) => (
-                  <div
-                    className="card"
-                    key={index}
-                  >
-                    <div>
-                      <img onClick={() => getTracks(index)} src={item.images[0].url} alt={item.name} style={{ width: '100%' }} />
-                      <h2 style={{ fontWeight: 'bold' }}>{item.name}</h2>
-                      <h3 style={{ display: "flex", justifyContent: 'flex-end' }}>
-                        <PlaylistAddIcon
-                          style={{ color: addedPlaylist.some(el => el.id === item.id) ? "#fb3741" : "inherit" }}
-                          onClick={() => {
-                            handleAddToLibrary(index);
-                          }}
-                        />
-                        <MoreVertIcon onClick={() => handleShowDescription(index)} />
-                      </h3>
-                    </div>
-                  </div>
+                  <CardItem key={index} index={index} onImageClick={getTracks} url={item.images[0].url} name={item.name} >
+                    <PlaylistAddIcon
+                      style={{ color: addedPlaylist.some(el => el === item.id) ? "#fb3741" : "inherit" }}
+                      onClick={() => {
+                        handleAddToLibrary(index);
+                      }}
+                    />
+                    <MoreVertIcon onClick={() => handleShowDescription(index)} />
+                  </CardItem>
                 ))
                 :
-                <FavoriteSongs />
+                <TrackTable track={track} handleBack={handleBack} />
             }
           </div>
         </div>

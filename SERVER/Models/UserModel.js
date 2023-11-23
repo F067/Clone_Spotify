@@ -8,7 +8,9 @@ const userSchema = mongoose.Schema({
     name: String,
     email: String,
     password: String,
+    library: Array,
     playlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist' }],
+    likedSong: Array,
     avatar: String
 });
 //retirer le mot de passe des recherches en front

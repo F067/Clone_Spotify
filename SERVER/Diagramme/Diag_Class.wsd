@@ -5,11 +5,13 @@
 package "Entities" {
   class User {
     - Firstname
-    - LastName
-    - Mail
+    - Name
+    - Email
     - Password
-    - photo
-    + add Photo (Avatar)
+    - Avatar
+    - Library
+    - Playlist
+    - LikedSong
     + login(username: String, password: String): boolean
     + signup(username: String, password: String, email: String): boolean
     + addPlaylistToLibrary(playlist: Playlist): void
@@ -29,7 +31,6 @@ package "Entities" {
     - Artist
     - Album
     + play(): void
-    // don't know what else to add!
   }
 }
 

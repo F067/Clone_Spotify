@@ -15,7 +15,7 @@ const theme = createTheme({
     },
   },
 });
-const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9]).{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=.*[0-9]).{8,}$/;
 
 function Formular(props) {
 
