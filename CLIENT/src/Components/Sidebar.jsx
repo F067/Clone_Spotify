@@ -70,7 +70,6 @@ export default function Sidebar() {
           return (
             <Link to={el.link} key={index}>
               <div
-
                 style={{
                   display: "flex",
                   alignItems: "center",
